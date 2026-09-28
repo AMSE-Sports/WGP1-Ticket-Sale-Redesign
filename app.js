@@ -104,7 +104,7 @@ const translations = {
 
 const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
 const state = { attendees: [], ticketQuantities: {} };
-const screens = ["screen-visitor","screen-group","screen-handover","screen-staff","screen-complete"];
+const screens = ["screen-visitor","screen-handover","screen-staff","screen-complete"];
 const $ = id => document.getElementById(id);
 let currentLanguage = localStorage.getItem("wgp1-language") || "th";
 if (!translations[currentLanguage]) currentLanguage = "th";
@@ -163,7 +163,8 @@ function setError(id, message) { const box = $(id); box.textContent = message; b
 function updateCounts() {
   const count = localizedNumber(state.attendees.length);
   $("visitor-count").textContent = `${count} ${t("peopleUnit")}`;
-  $("group-message").textContent = t("confirmedCount", { count });
+  $("inline-saved-count").textContent = t("confirmedCount", { count });
+  $("remove-last-inline").classList.toggle("hidden", state.attendees.length === 0);
   $("handover-count").textContent = count;
   const staffCount = staffNumber(state.attendees.length);
   $("staff-attendee-count").textContent = `${staffCount} ${translate("en", "peopleUnit")}`;
@@ -207,7 +208,15 @@ function updateMarketingEmailPanel() {
   $("v-marketing").setAttribute("aria-expanded", String(enabled));
   if (!enabled) $("v-email").value = "";
 }
-function resetVisitorForm() { $("visitor-form").reset(); $("v-country").value = "TH"; updateGuardianPanel(); updateMarketingEmailPanel(); setError("visitor-error", ""); $("visitor-form").querySelectorAll("[aria-invalid]").forEach(element => element.removeAttribute("aria-invalid")); }
+function resetVisitorForm(hideSavedNotice = true) {
+  $("visitor-form").reset();
+  $("v-country").value = "TH";
+  updateGuardianPanel();
+  updateMarketingEmailPanel();
+  setError("visitor-error", "");
+  $("visitor-form").querySelectorAll("[aria-invalid]").forEach(element => element.removeAttribute("aria-invalid"));
+  if (hideSavedNotice) $("visitor-saved-notice").classList.add("hidden");
+}
 
 function renderTickets() {
   const container = $("ticket-lines"); if (!container) return; container.textContent = "";
@@ -254,10 +263,32 @@ $("language-select").addEventListener("change", event => applyLanguage(event.tar
 $("v-age").addEventListener("change", updateGuardianPanel);
 $("v-marketing").addEventListener("change", updateMarketingEmailPanel);
 document.querySelectorAll('input[name="v-source"]').forEach(input => input.addEventListener("change", validateSourceSelection));
-$("visitor-form").addEventListener("submit", event => { event.preventDefault(); validateSourceSelection(); if (!validateForm(event.currentTarget, "visitor-error")) return; state.attendees.push(readVisitor()); updateCounts(); showScreen("screen-group"); });
-$("add-visitor").addEventListener("click", () => { resetVisitorForm(); showScreen("screen-visitor"); });
-$("remove-last").addEventListener("click", () => { state.attendees.pop(); updateCounts(); if (!state.attendees.length) { resetVisitorForm(); showScreen("screen-visitor"); } });
-$("finish-visitors").addEventListener("click", () => { if (!state.attendees.length) return; updateCounts(); showScreen("screen-handover"); });
+$("visitor-form").addEventListener("submit", event => {
+  event.preventDefault();
+  validateSourceSelection();
+  if (!validateForm(event.currentTarget, "visitor-error")) return;
+
+  const action = event.submitter?.value || "next";
+  state.attendees.push(readVisitor());
+  updateCounts();
+
+  if (action === "finish") {
+    $("visitor-saved-notice").classList.add("hidden");
+    showScreen("screen-handover");
+    return;
+  }
+
+  resetVisitorForm(false);
+  updateCounts();
+  $("visitor-saved-notice").classList.remove("hidden");
+  $("visitor-form").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("remove-last-inline").addEventListener("click", () => {
+  if (!state.attendees.length) return;
+  state.attendees.pop();
+  updateCounts();
+  if (!state.attendees.length) $("visitor-saved-notice").classList.add("hidden");
+});
 $("to-staff").addEventListener("click", () => { renderTickets(); updateCounts(); showScreen("screen-staff"); });
 $("back-handover").addEventListener("click", () => showScreen("screen-handover"));
 $("staff-form").addEventListener("submit", event => { event.preventDefault(); if (!validateForm(event.currentTarget, "staff-error", "en")) return; const summary = calculateTickets(); if (summary.quantity !== state.attendees.length) { setError("staff-error", translate("en", "mismatchError", { count: staffNumber(state.attendees.length) })); return; } const transaction = buildTransaction(); saveDevelopmentTransaction(transaction); $("transaction-id").textContent = transaction.transactionId; setError("staff-error", ""); showScreen("screen-complete"); });
