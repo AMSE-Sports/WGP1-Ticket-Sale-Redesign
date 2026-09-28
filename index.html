@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WGP#1 — Visitor & Staff Registration</title>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.0/dist/umd/supabase.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://mhecpnqwwxspxfhdvzsc.supabase.co';
+    const SUPABASE_ANON_KEY =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oZWNwbnF3d3hzcHhmaGR2enNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwMDc0MjEsImV4cCI6MjA3ODU4MzQyMX0.ONaEMqU6BHuMSywE3Yvtbj78NqBbecI18amsD18Cgnc';
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function submitToSupabase(payload) {
+      const { visitor, staff, submittedAt } = payload;
+
+      const { error } = await sb
+        .from('ticket_sales')
+        .insert({
+          submitted_at: submittedAt,
+          visitor_email: null,
+          visitor_first_name: visitor.firstName,
+          visitor_last_name: visitor.lastName,
+          visitor_gender: visitor.gender,
+          visitor_age_range: visitor.ageRange,
+          visitor_country: visitor.country,
+          visitor_city: visitor.city,
+          visitor_thai_province: null,
+          visitor_source: visitor.source,
+          visitor_consent: !!visitor.consent,
+          staff_name: staff.staffName,
+          ticket_type: staff.ticketType,
+          ticket_qty: Number(staff.ticketQty || 0),
+          amount_paid: Number(staff.amountPaid || 0),
+          pay_method: staff.payMethod || ''
+        });
+
+      if (error) {
+        console.error('[Supabase insert error]', error);
+        throw error;
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --primary:#f37021;
+      --border:#ececec;
+      --ok:#16a34a;
+
+      --font-base:   clamp(18px, 2vw, 22px);
+      --font-label:  clamp(17px, 1.9vw, 21px);
+      --font-title:  clamp(24px, 2.6vw, 32px);
+      --font-note:   clamp(14px, 1.6vw, 18px);
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      font-family:system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background:#fafafa;
+      color:#111;
+      font-size:var(--font-base);
+      width:100%;
+      min-height:100vh;
+    }
+
+    .header { background:#000; }
+    .header img { display:block; width:100%; height:auto; }
+
+    .container {
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:0;
+    }
+
+    .screen {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .card {
+      width:100%;
+      background:#fff;
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+    }
+
+    .head {
+      padding:24px 20px;
+      border-bottom:1px solid var(--border);
+    }
+    .head h2 {
+      margin:0;
+      font-size:var(--font-title);
+      font-weight:900;
+    }
+
+    .body { padding:24px 20px; }
+
+    .row {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    @media (min-width:760px) {
+      .row.two { grid-template-columns:1fr 1fr; }
+    }
+
+    /* กล่องของแต่ละ STEP */
+    .form-step {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 18px;
+      background: #fff;
+      padding: 58px 16px 16px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+
+    .form-step .step-badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px 16px 0 0;
+      font-size: var(--font-note);
+      font-weight: 800;
+      background: #f3f4f6;
+      color: #111;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-step.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(243,112,33,.18);
+      background: #fffdf8;
+    }
+    .form-step.active .step-badge {
+      background: var(--primary);
+      color: #fff;
+      border-bottom-color: var(--primary);
+    }
+
+    .form-step.complete {
+      border-color: #16a34a;
+      background: #dcfce7;
+    }
+    .form-step.complete .step-badge {
+      background: #16a34a;
+      color: #fff;
+      border-bottom-color: #16a34a;
+    }
+
+    .form-step.complete label.title,
+    .form-step.complete .note,
+    .form-step.complete input,
+    .form-step.complete select {
+      color:#111 !important;
+    }
+    .form-step.complete input::placeholder,
+    .form-step.complete select::placeholder {
+      color:#9ca3af;
+    }
+
+    label.title {
+      font-weight:800;
+      font-size:var(--font-label);
+      margin-bottom:6px;
+      display:block;
+    }
+    label .en {
+      font-weight:600;
+      color:#555;
+      margin-left:4px;
+      font-size:calc(var(--font-label) - 1px);
+    }
+
+    input, select {
+      width:100%;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      outline:none;
+      background:#fff;
+      font-family:inherit;
+      font-size:var(--font-base);
+    }
+    input:focus, select:focus {
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(243,112,33,.2);
+    }
+
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      border:0;
+      padding:18px 24px;
+      border-radius:16px;
+      cursor:pointer;
+      font-size:var(--font-base);
+    }
+    .btn.primary {
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 10px 24px -16px rgba(243,112,33,.85);
+    }
+    .btn.dark { background:#111; color:#fff; }
+    .btn.wide { width:100%; }
+
+    .thankfull {
+      min-height:70vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      background:#e97435;
+      padding:80px 20px;
+    }
+    .text-block { max-width:900px; }
+
+    .big-text {
+      font-size:clamp(40px, 5.8vw, 72px);
+      font-weight:900;
+      line-height:1.25;
+      color:#fff;
+      margin:0 0 24px;
+      text-shadow:0 3px 12px rgba(0,0,0,0.25);
+    }
+    .big-text.th {
+      font-size:clamp(34px, 4.8vw, 58px);
+      margin-top:10px;
+    }
+    .medium-text {
+      font-size:clamp(20px, 3vw, 30px);
+      font-weight:600;
+      line-height:1.6;
+      color:#fff;
+      margin:10px 0 16px;
+      opacity:0.95;
+      text-shadow:0 2px 8px rgba(0,0,0,0.25);
+    }
+    .big-text.th,
+    .medium-text.th {
+      margin-top:4px;
+    }
+
+    .final-complete {
+      text-align:center;
+      padding:48px 20px;
+      color:#fff;
+      background:linear-gradient(135deg, var(--ok), #4ade80);
+    }
+
+    .pay-choice {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-right:18px;
+      font-size:var(--font-base);
+    }
+
+    .note {
+      color:#666;
+      font-size:var(--font-note);
+    }
+
+    .hidden { display:none !important; }
+
+    .footer {
+      padding:12px 16px;
+      text-align:center;
+      color:#666;
+      font-size:var(--font-note);
+    }
+
+    .total-line { font-weight:800; }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      width:auto;
+      accent-color:var(--primary);
+    }
+
+    label.consent-check {
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-size:var(--font-base);
+      margin-top:8px;
+    }
+    label.consent-check input[type="checkbox"] {
+      flex:0 0 auto;
+      width:1.25em;
+      height:1.25em;
+      margin-top:0.25em;
+    }
+    label.consent-check span {
+      flex:1 1 auto;
+      line-height:1.5;
+    }
+
+    .consent-desc { margin-bottom:10px; }
+
+    .modal { display:none; }
+
+    @media (min-width: 768px) and (pointer: coarse) {
+      select,
+      select option {
+        font-size: 22px;
+        line-height: 1.6;
+      }
+    }
+
+    /* country autocomplete */
+    .country-suggestions {
+      position:absolute;
+      z-index:40;
+      top:100%;
+      left:0;
+      right:0;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      margin-top:4px;
+      max-height:240px;
+      overflow-y:auto;
+      box-shadow:0 12px 30px rgba(15,23,42,0.18);
+    }
+
+    .country-suggestions div {
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:var(--font-base);
+    }
+
+    .country-suggestions div:hover {
+      background:#f3f4f6;
+    }
+
+    .country-suggestions .no-match {
+      color:#9ca3af;
+      cursor:default;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="Header.png" alt="WGP#1 Waterjet World Cup 2025 Header">
+  </div>
+
+  <!-- SCREEN 1: VISITOR -->
+  <section id="screen-visitor" class="screen container">
+    <div class="card">
+      <div class="head">
+        <h2>ส่วนที่ 1 — ผู้ชม (Visitor)</h2>
+      </div>
+      <form class="body" id="visitor-form">
+
+        <!-- STEP 1 : Name -->
+        <div class="form-step" data-step="1">
+          <div class="step-badge">STEP 1</div>
+
+          <div class="row two">
+            <div>
+              <label class="title">1. ชื่อจริง<span class="en"> / First Name</span> *</label>
+              <input id="v-first" required>
+            </div>
+            <div>
+              <label class="title">2. นามสกุล<span class="en"> / Last Name</span> *</label>
+              <input id="v-last" required>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:-6px; margin-bottom:0;">
+            กรุณากรอกชื่อ–นามสกุลตามบัตรประชาชนหรือหนังสือเดินทาง • Please use your legal first and last name.
+          </div>
+        </div>
+
+        <!-- STEP 2 : Gender / Age -->
+        <div class="form-step" data-step="2">
+          <div class="step-badge">STEP 2</div>
+
+          <div class="row two">
+            <div>
+              <label class="title">3. เพศ<span class="en"> / Gender</span> *</label>
+              <select id="v-gender" required>
+                <option value="">— เลือกเพศ / Select —</option>
+                <option value="male">ชาย / Male</option>
+                <option value="female">หญิง / Female</option>
+                <option value="unspecified">ไม่ระบุ / Prefer not to say</option>
+              </select>
+            </div>
+            <div>
+              <label class="title">4. อายุ<span class="en"> / Age</span> *</label>
+              <select id="v-age" required>
+                <option value="">— เลือกช่วงอายุ / Select —</option>
+                <option>ต่ำกว่า 18 ปี / Under 18 Yrs.</option>
+                <option>18-25 ปี / 18–25 Yrs.</option>
+                <option>26-40 ปี / 26–40 Yrs.</option>
+                <option>41-60 ปี / 41–60 Yrs.</option>
+                <option>60 ปีขึ้นไป / 60+ Yrs.</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 : Country / City -->
+        <div class="form-step" data-step="3">
+          <div class="step-badge">STEP 3</div>
+
+          <div class="row two">
+            <!-- COUNTRY AUTOCOMPLETE -->
+            <div style="position:relative;">
+              <label class="title">
+                5. ประเทศที่อาศัย
+                <span class="en"> / Country of Residence</span> *
+              </label>
+              <input
+                id="v-country"
+                autocomplete="off"
+                required
+                placeholder="เริ่มพิมพ์ 2–3 ตัวอักษร เช่น Tha, Jap, Uni...">
+
+              <div id="country-suggestions" class="country-suggestions hidden"></div>
+
+              <div class="note">
+                เริ่มพิมพ์ชื่อประเทศ ระบบจะแสดงรายการให้เลือกอัตโนมัติ • Type a few letters and pick from the list.
+              </div>
+            </div>
+
+            <!-- CITY -->
+            <div>
+              <label class="title">
+                6. เมืองที่อาศัย<span class="en"> / City</span> *
+              </label>
+              <input
+                id="v-city"
+                required
+                pattern="[\u0E00-\u0E7F a-zA-Z-]+"
+                placeholder="เช่น Pattaya / กรุงเทพฯ">
+              <div class="note">
+                รองรับอักษรไทย/อังกฤษและช่องว่างเท่านั้น • Thai/English letters & spaces only
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4 : Source (multi-select checkboxes) -->
+        <div class="form-step" data-step="4">
+          <div class="step-badge">STEP 4</div>
+
+          <div class="row">
+            <div>
+              <label class="title">
+                7. คุณทราบข่าวจากสื่อใด
+                <span class="en">/ How did you hear about us?</span> *
+              </label>
+              <div class="note" style="margin-bottom:8px;">
+                เลือกได้มากกว่า 1 ข้อ • You may select more than one channel.
+              </div>
+
+              <div class="source-options">
+                <label class="consent-check">
+                  <input type="checkbox" name="v-source" value="pattaya-promotions">
+                  <span>From Promotions in Pattaya / จากการประชาสัมพันธ์ในเมือง</span>
+                </label>
+
+                <label class="consent-check">
+                  <input type="checkbox" name="v-source" value="online-media">
+                  <span>From Online Media / จากช่องทางออนไลน์</span>
+                </label>
+
+                <label class="consent-check">
+                  <input type="checkbox" name="v-source" value="news-tv">
+                  <span>From News & TV / จากหนังสือพิมพ์หรือโทรทัศน์</span>
+                </label>
+
+                <label class="consent-check">
+                  <input type="checkbox" name="v-source" value="world-series-2025">
+                  <span>From the World Series 2025 / จากงาน World Series 2025</span>
+                </label>
+
+                <label class="consent-check">
+                  <input type="checkbox" name="v-source" value="friend">
+                  <span>From a Friend or Acquaintance / จากเพื่อนหรือคนรู้จัก</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5 : Consent -->
+        <div class="form-step" data-step="5">
+          <div class="step-badge">STEP 5</div>
+
+          <div class="row">
+            <div>
+              <label class="title">ความยินยอม<span class="en">/ Consent</span> *</label>
+
+              <div class="consent-desc">
+                <strong>EN: Media (Photo & Video) & Personal Data</strong>
+                <p class="note">
+                  By attending the WGP#1 Waterjet World Cup 2025, which includes live broadcasting and global media coverage,
+                  you grant the event organizers and their partners the right to photograph, film, and record your image and voice
+                  for use in promotions, advertising, live streams, and other media—without the need for further consent or
+                  compensation. Entering the event area constitutes full and unconditional consent. If you do not wish to appear
+                  in such media, please avoid camera zones or broadcast areas.
+                </p>
+
+                <strong>TH: การเก็บข้อมูลส่วนบุคคล และการบันทึกภาพ/วิดีโอ</strong>
+                <p class="note">
+                  ในการเข้าชมการแข่งขัน WGP#1 Waterjet World Cup 2025 ซึ่งมีการถ่ายทอดสดและเผยแพร่สู่สาธารณะทั่วโลก
+                  ท่านยินยอมให้ผู้จัดงานและพันธมิตร สามารถบันทึกภาพนิ่ง วิดีโอ และเสียงของท่าน เพื่อใช้ในสื่อประชาสัมพันธ์
+                  โฆษณา ถ่ายทอดสด และสื่ออื่น ๆ โดยไม่ต้องขออนุญาตหรือจ่ายค่าตอบแทนใด ๆ เพิ่มเติม การเข้าสู่พื้นที่จัดงาน
+                  ถือเป็นการให้ความยินยอมโดยสมบูรณ์ หากไม่ประสงค์ให้ถูกบันทึกภาพ โปรดหลีกเลี่ยงบริเวณกล้องหรือพื้นที่ถ่ายทอดสด
+                </p>
+              </div>
+
+              <label class="consent-check">
+                <input type="checkbox" id="v-consent" name="v-consent" required>
+                <span>
+                  ฉันได้อ่านและยินยอมตามเงื่อนไขข้างต้น<br>
+                  I have read and consent to the conditions above.
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn primary wide" type="submit">
+          ยืนยันข้อมูลผู้ชม • Confirm Visitor Details
+        </button>
+      </form>
+    </div>
+    <div class="footer">© 2025 WGP#1</div>
+  </section>
+
+  <!-- SCREEN 2: THANK YOU -->
+  <section id="screen-thank" class="screen container hidden">
+    <div class="card">
+      <div class="thankfull">
+        <div class="text-block">
+          <h2 class="big-text">Ticket is being processed.</h2>
+          <h2 class="big-text th">ตั๋วของคุณกำลังอยู่ระหว่างดำเนินการ</h2>
+          <p class="medium-text">Please notify the staff to proceed to the next step.</p>
+          <p class="medium-text th">กรุณาแจ้งเจ้าหน้าที่เพื่อดำเนินการในขั้นตอนถัดไป</p>
+        </div>
+      </div>
+
+      <div class="body" style="text-align:center">
+        <button class="btn dark" id="to-staff">
+          ดำเนินการต่อสำหรับเจ้าหน้าที่ • Continue to Staff
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: STAFF -->
+  <section id="screen-staff" class="screen container hidden">
+    <div class="card">
+      <div class="head"><h2>ส่วนที่ 2 — เจ้าหน้าที่ (Staff)</h2></div>
+      <form class="body" id="staff-form" autocomplete="off">
+        <div class="row two">
+          <div>
+            <label class="title">เจ้าหน้าที่<span class="en">/ Staff</span> *</label>
+            <select id="s-staff" required>
+              <option value="">— เลือกเจ้าหน้าที่ / Select —</option>
+              <option>น้ำหวาน</option>
+              <option>อ้อม</option>
+              <option>เบล</option>
+              <option>การ์ตูน</option>
+            </select>
+          </div>
+          <div>
+            <label class="title">ตั๋วประเภท<span class="en">/ Ticket Type</span> *</label>
+            <select id="s-ticket" required>
+              <option value="">— เลือกประเภทตั๋ว / Select —</option>
+              <option value="250-17" data-price="250">250฿ - Wed 17</option>
+              <option value="250-18" data-price="250">250฿ - Thu 18</option>
+              <option value="250-19" data-price="250">250฿ - Fri 19</option>
+              <option value="350-20" data-price="350">350฿ - Sat 20</option>
+              <option value="350-21" data-price="350">350฿ - Sun 21</option>
+              <option value="400-wed-fri" data-price="400">400฿ - Weekday (Wed-Fri)</option>
+              <option value="500-weekend" data-price="500">500฿ - Pro Weekend (Sat-Sun)</option>
+              <option value="750-all" data-price="750">750฿ - All Event</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row two">
+          <div>
+            <label class="title">จำนวนตั๋วที่ซื้อ<span class="en">/ Quantity</span> *</label>
+            <input id="s-qty" type="number" min="1" step="1" required>
+          </div>
+          <div>
+            <label class="title">ยอดชำระเงิน (THB)<span class="en">/ Amount Paid</span> *</label>
+            <input id="s-amount" type="number" min="0" step="1" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="title">ช่องทางการชำระ<span class="en">/ Payment Method</span> *</label>
+            <label class="pay-choice">
+              <input type="radio" name="pay" value="เงินสด" required>
+              <span>เงินสด / Cash</span>
+            </label>
+            <label class="pay-choice">
+              <input type="radio" name="pay" value="โอนจ่าย">
+              <span>โอนจ่าย / Bank Transfer</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="total-line">
+            ยอดรวมโดยอัตโนมัติ • Auto Total:
+            <span id="auto-total">0</span> THB
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn primary" id="finalize" type="submit">
+            Finalize Registration
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: COMPLETE -->
+  <section id="screen-complete" class="screen container hidden">
+    <div class="card">
+      <div class="final-complete">
+        <h2 style="margin:0 0 8px 0;">COMPLETE ✅</h2>
+        <p style="margin:0">ดำเนินการเสร็จสิ้นแล้ว — พร้อมรับผู้ชมคนถัดไป</p>
+      </div>
+      <div class="body" style="text-align:center">
+        <button class="btn primary" id="back-to-start">
+          กลับไปเริ่มใหม่ • Back to Start
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  function show(id){
+    ['screen-visitor','screen-thank','screen-staff','screen-complete']
+      .forEach(i => document.getElementById(i).classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Visitor -> Thank
+  document.getElementById('visitor-form').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const sourceChecks = document.querySelectorAll('input[name="v-source"]:checked');
+    if (!sourceChecks.length) {
+      alert('กรุณาเลือกอย่างน้อย 1 ช่องทางในข้อ 7 (How did you hear about us?)');
+      return;
+    }
+
+    show('screen-thank');
+  });
+
+  // Thank -> Staff
+  document.getElementById('to-staff').addEventListener('click', function(){
+    show('screen-staff');
+  });
+
+  // Auto price calculation
+  (function(){
+    var sel = document.getElementById('s-ticket');
+    var qty = document.getElementById('s-qty');
+    var amt = document.getElementById('s-amount');
+    var totalEl = document.getElementById('auto-total');
+    function recalc(){
+      var price = Number((sel.options[sel.selectedIndex] || {}).getAttribute('data-price') || 0);
+      var q = Math.max(0, Number(qty.value || 0));
+      var total = price * q;
+      totalEl.textContent = total;
+      if (!document.activeElement || document.activeElement.id !== 's-amount') {
+        amt.value = total;
+      }
+    }
+    sel.addEventListener('change', recalc);
+    qty.addEventListener('input', recalc);
+    amt.addEventListener('input', function(){
+      totalEl.textContent = amt.value || 0;
+    });
+    recalc();
+  })();
+
+  // Staff submit -> Supabase -> Complete
+  document.getElementById('staff-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const sourceChecks = Array.from(document.querySelectorAll('input[name="v-source"]:checked'));
+    const sourceValue = sourceChecks.map(c => c.value).join(', ');
+
+    var payload = {
+      visitor: {
+        firstName: document.getElementById('v-first').value.trim(),
+        lastName: document.getElementById('v-last').value.trim(),
+        gender: document.getElementById('v-gender').value,
+        ageRange: document.getElementById('v-age').value,
+        country: document.getElementById('v-country').value,
+        city: document.getElementById('v-city').value.trim(),
+        source: sourceValue,
+        consent: document.getElementById('v-consent').checked
+      },
+      staff: {
+        staffName: document.getElementById('s-staff').value,
+        ticketType: document.getElementById('s-ticket').value,
+        ticketQty: document.getElementById('s-qty').value,
+        amountPaid: document.getElementById('s-amount').value,
+        payMethod: (document.querySelector('input[name=pay]:checked') || {}).value || ''
+      },
+      submittedAt: new Date().toISOString()
+    };
+
+    var btn = document.getElementById('finalize');
+    var old = btn.textContent;
+    btn.textContent = 'กำลังส่ง... / Submitting...';
+    btn.disabled = true;
+
+    try {
+      await submitToSupabase(payload);
+      show('screen-complete');
+    } catch (err) {
+      console.error('[Submit Error]', err);
+      alert('บันทึกลงระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+    } finally {
+      btn.textContent = old;
+      btn.disabled = false;
+    }
+  });
+
+  // Complete -> Back to start
+  document.getElementById('back-to-start').addEventListener('click', function(){
+    document.getElementById('visitor-form').reset();
+    document.getElementById('staff-form').reset();
+
+    resetSteps();
+    show('screen-visitor');
+  });
+
+  // ----- STEP HIGHLIGHT -----
+  (function(){
+    const stepEls = Array.from(document.querySelectorAll('.form-step'));
+    if (!stepEls.length) return;
+
+    function isStepComplete(stepEl){
+      const requiredFields = stepEl.querySelectorAll('input[required], select[required]');
+
+      for (const f of requiredFields) {
+        if (f.type === 'checkbox' || f.type === 'radio') {
+          const name = f.name;
+          const checked = stepEl.querySelectorAll(`input[name="${name}"]:checked`);
+          if (!checked.length) return false;
+        } else {
+          if (!f.value || !String(f.value).trim()) return false;
+        }
+      }
+
+      const sourceBoxes = stepEl.querySelectorAll('input[name="v-source"]');
+      if (sourceBoxes.length) {
+        const anyChecked = stepEl.querySelector('input[name="v-source"]:checked');
+        if (!anyChecked) return false;
+      }
+
+      return true;
+    }
+
+    function refreshSteps(){
+      let firstIncomplete = -1;
+
+      stepEls.forEach((step, idx) => {
+        const complete = isStepComplete(step);
+        step.classList.toggle('complete', complete);
+        step.classList.remove('active');
+
+        if (!complete && firstIncomplete === -1) {
+          firstIncomplete = idx;
+        }
+      });
+
+      const currentIndex = (firstIncomplete === -1)
+        ? stepEls.length - 1
+        : firstIncomplete;
+
+      stepEls[currentIndex].classList.add('active');
+    }
+
+    const fields = document.querySelectorAll('.form-step input, .form-step select');
+    fields.forEach(f => {
+      f.addEventListener('focus', () => {
+        const step = f.closest('.form-step');
+        if (!step) return;
+        stepEls.forEach(s => {
+          if (!s.classList.contains('complete')) {
+            s.classList.remove('active');
+          }
+        });
+        if (!step.classList.contains('complete')) {
+          step.classList.add('active');
+        }
+      });
+
+      f.addEventListener('input', refreshSteps);
+      f.addEventListener('change', refreshSteps);
+    });
+
+    refreshSteps();
+  })();
+
+  function resetSteps() {
+    const steps = document.querySelectorAll('.form-step');
+    steps.forEach(step => {
+      step.classList.remove('complete');
+      step.classList.remove('active');
+    });
+
+    const firstStep = document.querySelector('.form-step[data-step="1"]');
+    if (firstStep) firstStep.classList.add('active');
+  }
+
+  // ===== Country Autocomplete (แทน datalist) =====
+  (function () {
+    const countries = [
+      "Thailand","Afghanistan","Albania","Algeria","Andorra","Angola","Argentina",
+      "Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh",
+      "Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
+      "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso",
+      "Burundi","Cambodia","Cameroon","Canada","Chile","China","Colombia",
+      "Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Dominican Republic",
+      "Ecuador","Egypt","Estonia","Finland","France","Germany","Greece","Hong Kong",
+      "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel",
+      "Italy","Japan","Jordan","Kazakhstan","Kenya","Laos","Latvia","Lebanon",
+      "Lithuania","Luxembourg","Malaysia","Maldives","Mexico","Mongolia","Morocco",
+      "Myanmar","Nepal","Netherlands","New Zealand","Nigeria","Norway","Pakistan",
+      "Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia",
+      "Saudi Arabia","Singapore","Slovakia","Slovenia","South Africa","South Korea",
+      "Spain","Sri Lanka","Sweden","Switzerland","Taiwan","Turkey","Ukraine",
+      "United Arab Emirates","United Kingdom","United States","Vietnam","Yemen",
+      "Zambia","Zimbabwe"
+    ];
+
+    const input = document.getElementById("v-country");
+    const box   = document.getElementById("country-suggestions");
+
+    if (!input || !box) return;
+
+    function showSuggestions(list) {
+      box.innerHTML = "";
+
+      if (!list.length) {
+        const no = document.createElement("div");
+        no.textContent = "ไม่พบประเทศที่ตรงกับคำค้นหา";
+        no.className = "no-match";
+        box.appendChild(no);
+        box.classList.remove("hidden");
+        return;
+      }
+
+      list.forEach(name => {
+        const item = document.createElement("div");
+        item.textContent = name;
+        item.addEventListener("click", () => {
+          input.value = name;
+          box.classList.add("hidden");
+          input.dispatchEvent(new Event("input"));
+          input.blur();
+        });
+        box.appendChild(item);
+      });
+
+      box.classList.remove("hidden");
+    }
+
+    input.addEventListener("input", () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        box.classList.add("hidden");
+        return;
+      }
+
+      const matches = countries.filter(c =>
+        c.toLowerCase().startsWith(q) || c.toLowerCase().includes(q)
+      ).slice(0, 15);
+
+      showSuggestions(matches);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!box.contains(e.target) && e.target !== input) {
+        box.classList.add("hidden");
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
