@@ -290,7 +290,7 @@ function updateTicketSummary() {
   $("calculated-total").textContent = `${staffNumber(summary.total)} THB`;
   if (document.activeElement !== $("s-amount")) $("s-amount").value = summary.total;
 }
-function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
+function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); applyLanguage("en"); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
 function buildTransaction() {
   const ticketSummary = calculateTickets(); const transactionId = `JWC26-${new Date().toISOString().replace(/\D/g, "").slice(2,14)}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   return { transactionId, eventYear: APP_CONFIG.eventYear, dataMode: APP_CONFIG.dataMode, interfaceLanguage: currentLanguage, submittedAt: new Date().toISOString(), attendeeCount: state.attendees.length, attendees: state.attendees, sale: { staff: $("s-staff").value, paymentMethod: $("s-payment").value, ticketItems: ticketSummary.items, ticketQuantity: ticketSummary.quantity, calculatedTotal: ticketSummary.total, amountPaid: Number($("s-amount").value || 0), note: $("s-note").value.trim() } };
