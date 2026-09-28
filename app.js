@@ -246,6 +246,13 @@ function updateMarketingEmailPanel() {
   $("v-marketing").setAttribute("aria-expanded", String(enabled));
   if (!enabled) $("v-email").value = "";
 }
+function hasVisitorDraft() {
+  const textOrSelectValues = ["v-first","v-last","v-age","v-gender","v-city","v-email","g-name","g-relation","g-phone"];
+  const hasEnteredValue = textOrSelectValues.some(id => String($(id).value || "").trim());
+  const countryChanged = $("v-country").value && $("v-country").value !== "TH";
+  const hasCheckedOption = Boolean(document.querySelector('input[name="v-previous"]:checked, input[name="v-source"]:checked'));
+  return hasEnteredValue || countryChanged || hasCheckedOption || $("v-privacy").checked || $("v-marketing").checked || $("g-confirm").checked;
+}
 function resetVisitorForm(hideSavedNotice = true) {
   $("visitor-form").reset();
   $("v-country").value = "TH";
@@ -307,10 +314,19 @@ $("v-marketing").addEventListener("change", updateMarketingEmailPanel);
 document.querySelectorAll('input[name="v-source"]').forEach(input => input.addEventListener("change", validateSourceSelection));
 $("visitor-form").addEventListener("submit", event => {
   event.preventDefault();
+  const action = event.submitter?.value || "next";
+
+  if (action === "finish" && state.attendees.length > 0 && !hasVisitorDraft()) {
+    setError("visitor-error", "");
+    $("visitor-saved-notice").classList.add("hidden");
+    updateCounts();
+    showScreen("screen-handover");
+    return;
+  }
+
   validateSourceSelection();
   if (!validateForm(event.currentTarget, "visitor-error")) return;
 
-  const action = event.submitter?.value || "next";
   state.attendees.push(readVisitor());
   updateCounts();
 
