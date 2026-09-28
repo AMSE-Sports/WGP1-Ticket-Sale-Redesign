@@ -58,3 +58,76 @@ main{max-width:1320px}
   .registration-actions{grid-template-columns:1fr}
   .visitor-saved-notice{margin-bottom:16px;padding:14px 16px}
 }
+
+/* Welcome and language selection */
+.welcome-screen{display:grid;place-items:center;min-height:520px}
+.welcome-card{width:min(1040px,100%);padding:clamp(28px,4vw,48px);border-radius:26px;background:#fff;text-align:center;box-shadow:var(--shadow)}
+.welcome-card h2{margin:8px 0 4px;font-size:clamp(32px,4vw,50px);line-height:1.15}
+.welcome-subtitle{margin:0 0 28px;color:var(--muted);font-size:19px}
+.language-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.language-card{display:grid;place-items:center;min-height:142px;padding:17px 12px;border:2px solid #e2e5ea;border-radius:18px;background:#fff;color:var(--ink);font:inherit;cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+.language-card:hover,.language-card:focus-visible,.language-card[aria-pressed="true"]{border-color:var(--orange);box-shadow:0 10px 25px rgba(243,112,33,.15);transform:translateY(-2px);outline:0}
+.language-card[aria-pressed="true"]{background:#fff7f1}
+.language-flag{font-size:42px;line-height:1}
+.language-card strong{margin-top:9px;font-size:19px}
+.language-card small{color:var(--muted);font-size:13px}
+.welcome-mode .language-switcher{display:none}
+
+/* Compact single-page form */
+.flow-active .hero,.flow-active .hero img{min-height:156px;height:156px}
+.flow-active .hero-copy{bottom:18px}
+.flow-active .hero-copy h1{max-width:720px;margin:5px 0 0;font-size:clamp(27px,3.5vw,40px);letter-spacing:-1px}
+.flow-active .hero-copy p{margin-top:3px;font-size:16px}
+.flow-active .year-chip{padding:4px 10px;font-size:11px}
+.flow-active main{padding-top:20px}
+.flow-active #screen-visitor .page-head{margin-bottom:12px}
+.flow-active #screen-visitor .page-head h2{margin:2px 0;font-size:clamp(25px,3vw,34px)}
+.flow-active #screen-visitor .page-head>div>p:last-child{font-size:15px}
+.flow-active .attendee-counter{padding:10px 15px}
+.flow-active .attendee-counter strong{font-size:21px}
+.flow-active .visitor-form-layout,.flow-active .form-column{gap:14px}
+.flow-active .form-section,.flow-active .registration-action-panel{padding:18px;border-radius:16px}
+.flow-active .section-title{gap:9px;margin:0 0 12px;padding-bottom:9px}
+.flow-active .section-title h3{font-size:18px}
+.flow-active .section-title p{font-size:12px}
+.flow-active .section-number{flex-basis:31px;width:31px;height:31px;font-size:14px}
+.flow-active .grid{gap:11px 13px}
+.flow-active input,.flow-active select,.flow-active textarea{min-height:45px;margin-top:5px;padding:9px 11px}
+.flow-active .field-title{font-size:14px}
+.flow-active .field-hint{margin:-4px 0 7px;font-size:12px}
+.flow-active .option-grid{gap:7px}
+.flow-active .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.flow-active .option-tile span{min-height:44px;padding:8px 10px;gap:8px;font-size:13px}
+.flow-active .option-tile span::before{flex-basis:18px;width:18px;height:18px}
+.flow-active .privacy-box{padding:13px 14px;font-size:13px;line-height:1.42}
+.flow-active .privacy-box p{margin-bottom:7px}
+.flow-active .check-line{gap:9px;margin-top:10px;padding:11px}
+.flow-active .check-line span{font-size:14px}
+.flow-active .check-line input{width:20px;height:20px;min-height:20px;margin:1px 0 0;padding:0}
+.flow-active .registration-action{min-height:70px;padding:11px 14px}
+.flow-active .registration-action-icon{width:38px;height:38px;font-size:23px}
+.flow-active .registration-action strong{font-size:15px}
+.flow-active .guardian-panel{padding:18px}
+
+@media(min-width:768px) and (max-width:1180px){
+  .flow-active .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .flow-active main{padding-top:16px}
+  .flow-active .form-section,.flow-active .registration-action-panel{padding:16px}
+}
+@media(max-width:900px){
+  .language-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .welcome-screen{min-height:auto}
+  .welcome-card{padding:25px 17px;border-radius:20px}
+  .welcome-subtitle{margin-bottom:20px;font-size:17px}
+  .language-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .language-card{min-height:126px;padding:14px 8px}
+  .language-flag{font-size:36px}
+  .flow-active .hero,.flow-active .hero img{min-height:138px;height:138px}
+  .flow-active .hero-copy{bottom:14px}
+  .flow-active .hero-copy h1{font-size:25px}
+  .flow-active .hero-copy p,.flow-active .year-chip{display:none}
+  .flow-active .form-section,.flow-active .registration-action-panel{padding:18px 15px}
+  .flow-active .source-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

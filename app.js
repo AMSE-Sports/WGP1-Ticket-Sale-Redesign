@@ -17,7 +17,7 @@ const APP_CONFIG = {
 const localeCodes = { th: "th-TH", en: "en-US", zh: "zh-CN", ja: "ja-JP", ko: "ko-KR", fr: "fr-FR", es: "es-ES" };
 const translations = {
   th: {
-    languageLabel:"ภาษา", devVersion:"เวอร์ชันพัฒนาปี 2026", heroSubtitle:"ลงทะเบียนผู้เข้าชมและจำหน่ายตั๋ว", devNoticeTitle:"เวอร์ชันทดสอบปี 2026", devNoticeBody:"วันแข่งขันและราคาตั๋วเป็นค่าร่าง ข้อมูลจะเก็บในอุปกรณ์นี้เท่านั้นและยังไม่ส่งเข้าฐานข้อมูลจริง",
+    welcomeTitle:"ยินดีต้อนรับสู่ WGP#1", welcomeSubtitle:"กรุณาเลือกภาษาที่ต้องการใช้ในการลงทะเบียน", languageLabel:"ภาษา", devVersion:"เวอร์ชันพัฒนาปี 2026", heroSubtitle:"ลงทะเบียนผู้เข้าชมและจำหน่ายตั๋ว", devNoticeTitle:"เวอร์ชันทดสอบปี 2026", devNoticeBody:"วันแข่งขันและราคาตั๋วเป็นค่าร่าง ข้อมูลจะเก็บในอุปกรณ์นี้เท่านั้นและยังไม่ส่งเข้าฐานข้อมูลจริง",
     partVisitor:"ส่วนที่ 1 · ผู้เข้าชม", visitorTitle:"ลงทะเบียนผู้เข้าชมรายบุคคล", visitorIntro:"ผู้เข้าชมทุกคนต้องกรอกข้อมูลของตนเองทีละคนก่อนเข้าสู่ขั้นตอนจำหน่ายตั๋ว", registered:"ลงทะเบียนแล้ว", progressVisitor:"1 ข้อมูลผู้ชม", progressConsent:"2 ยืนยันสิทธิ", progressHandover:"3 ส่งคืนให้เจ้าหน้าที่",
     identityTitle:"ข้อมูลประจำตัว", identitySubtitle:"ข้อมูลส่วนบุคคล", firstName:"ชื่อจริง *", lastName:"นามสกุล *", ageGroup:"ช่วงอายุ *", selectOption:"— กรุณาเลือก —", ageUnder10:"ต่ำกว่า 10 ปี", age60Plus:"60 ปีขึ้นไป", gender:"เพศ *", male:"ชาย", female:"หญิง", nonBinary:"นอนไบนารี", preferNot:"ไม่ประสงค์ระบุ",
     profileTitle:"ที่อยู่อาศัยและข้อมูลผู้ชม", profileSubtitle:"ข้อมูลผู้ชม", country:"ประเทศที่อาศัย *", countrySelect:"— เลือกประเทศ —", city:"จังหวัดหรือเมือง *", cityPlaceholder:"เช่น ชลบุรี / พัทยา", previousAttendance:"เคยเข้าชม WGP#1 หรือไม่ *", firstTime:"มาครั้งแรก", returning:"เคยเข้าชมแล้ว", discovery:"ช่องทางที่ทำให้รู้จักงาน *", sourceMultiHint:"เลือกได้มากกว่า 1 ช่องทาง", influencer:"อินฟลูเอนเซอร์ / ครีเอเตอร์", pattayaPromotion:"ป้ายหรือสื่อในพัทยา", hotelTour:"โรงแรมหรือบริษัททัวร์", friendFamily:"เพื่อนหรือครอบครัว", previousEvent:"งาน WGP#1 ครั้งก่อน", other:"อื่น ๆ",
@@ -29,7 +29,7 @@ const translations = {
     peopleUnit:"คน", ticketUnit:"ใบ", confirmedCount:"ลงทะเบียนแล้ว {count} คน", requiredError:"กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน", mismatchError:"จำนวนตั๋วต้องเท่ากับจำนวนผู้ชมที่ลงทะเบียน ({count} ใบ)", perTicket:"ต่อใบ", noCharge:"ไม่มีค่าใช้จ่าย", quantityFor:"จำนวนสำหรับ {name}", ticketWeekdayDay:"บัตรวันเดียว — วันธรรมดา", ticketWeekendDay:"บัตรวันเดียว — วันสุดสัปดาห์", ticketWeekdayPass:"แพ็กเกจวันธรรมดา", ticketProWeekend:"โปรวีคเอนด์", ticketAllEvent:"บัตรเข้าชมตลอดงาน", ticketComplimentary:"บัตรเชิญ"
   },
   en: {
-    languageLabel:"Language", devVersion:"2026 DEVELOPMENT VERSION", heroSubtitle:"Visitor Registration & Ticket Sale", devNoticeTitle:"2026 test version", devNoticeBody:"Event dates and ticket prices are drafts. Data is stored only on this device and is not sent to the production database.",
+    welcomeTitle:"Welcome to WGP#1", welcomeSubtitle:"Please select your registration language", languageLabel:"Language", devVersion:"2026 DEVELOPMENT VERSION", heroSubtitle:"Visitor Registration & Ticket Sale", devNoticeTitle:"2026 test version", devNoticeBody:"Event dates and ticket prices are drafts. Data is stored only on this device and is not sent to the production database.",
     partVisitor:"PART 1 · VISITOR", visitorTitle:"Individual visitor registration", visitorIntro:"Every visitor must complete their own registration before staff can issue tickets.", registered:"Registered", progressVisitor:"1 Visitor details", progressConsent:"2 Consent", progressHandover:"3 Return to staff",
     identityTitle:"Identity details", identitySubtitle:"Personal information", firstName:"First name *", lastName:"Last name *", ageGroup:"Age group *", selectOption:"— Please select —", ageUnder10:"Under 10", age60Plus:"60 or older", gender:"Gender *", male:"Male", female:"Female", nonBinary:"Non-binary", preferNot:"Prefer not to say",
     profileTitle:"Residence and visitor profile", profileSubtitle:"Audience profile", country:"Country of residence *", countrySelect:"— Select a country —", city:"Province / City *", cityPlaceholder:"e.g. Chonburi / Pattaya", previousAttendance:"Previous WGP#1 attendance *", firstTime:"First time", returning:"Returning visitor", discovery:"How did you hear about the event? *", sourceMultiHint:"Select all that apply", influencer:"Influencer / Creator", pattayaPromotion:"Pattaya advertising", hotelTour:"Hotel or tour company", friendFamily:"Friend or family", previousEvent:"Previous WGP#1 event", other:"Other",
@@ -41,7 +41,7 @@ const translations = {
     peopleUnit:"people", ticketUnit:"tickets", confirmedCount:"{count} visitor(s) confirmed", requiredError:"Please complete all required fields.", mismatchError:"Ticket quantity must match the registered visitors ({count}).", perTicket:"per ticket", noCharge:"No charge", quantityFor:"Quantity for {name}", ticketWeekdayDay:"Single Day — Weekday", ticketWeekendDay:"Single Day — Weekend", ticketWeekdayPass:"Weekday Package", ticketProWeekend:"Pro Weekend", ticketAllEvent:"All Event Pass", ticketComplimentary:"Complimentary"
   },
   zh: {
-    languageLabel:"语言", devVersion:"2026 开发版本", heroSubtitle:"观众登记与售票", devNoticeTitle:"2026 测试版本", devNoticeBody:"比赛日期和票价为草案。数据仅保存在本设备上，尚未发送至正式数据库。",
+    welcomeTitle:"欢迎来到 WGP#1", welcomeSubtitle:"请选择登记时使用的语言", languageLabel:"语言", devVersion:"2026 开发版本", heroSubtitle:"观众登记与售票", devNoticeTitle:"2026 测试版本", devNoticeBody:"比赛日期和票价为草案。数据仅保存在本设备上，尚未发送至正式数据库。",
     partVisitor:"第 1 部分 · 观众", visitorTitle:"观众个人登记", visitorIntro:"每位观众必须逐一完成登记，之后工作人员才能办理售票。", registered:"已登记", progressVisitor:"1 观众资料", progressConsent:"2 同意确认", progressHandover:"3 交还工作人员",
     identityTitle:"身份资料", identitySubtitle:"个人信息", firstName:"名 *", lastName:"姓 *", ageGroup:"年龄组 *", selectOption:"— 请选择 —", ageUnder10:"10 岁以下", age60Plus:"60 岁及以上", gender:"性别 *", male:"男", female:"女", nonBinary:"非二元性别", preferNot:"不愿透露",
     profileTitle:"居住地与观众资料", profileSubtitle:"观众概况", country:"居住国家/地区 *", countrySelect:"— 选择国家/地区 —", city:"省份 / 城市 *", cityPlaceholder:"例如：春武里 / 芭堤雅", previousAttendance:"是否参加过 WGP#1 *", firstTime:"首次参加", returning:"曾经参加", discovery:"您通过哪些渠道得知活动？*", sourceMultiHint:"可多选", influencer:"网红 / 创作者", pattayaPromotion:"芭堤雅广告", hotelTour:"酒店或旅行社", friendFamily:"朋友或家人", previousEvent:"以往 WGP#1 活动", other:"其他",
@@ -53,7 +53,7 @@ const translations = {
     peopleUnit:"人", ticketUnit:"张", confirmedCount:"已确认 {count} 位观众", requiredError:"请填写所有必填项目。", mismatchError:"门票数量必须与已登记观众人数一致（{count} 张）。", perTicket:"每张", noCharge:"免费", quantityFor:"{name} 数量", ticketWeekdayDay:"单日票 — 工作日", ticketWeekendDay:"单日票 — 周末", ticketWeekdayPass:"工作日套票", ticketProWeekend:"专业赛周末票", ticketAllEvent:"全程通票", ticketComplimentary:"赠票"
   },
   ja: {
-    languageLabel:"言語", devVersion:"2026 開発版", heroSubtitle:"来場者登録・チケット販売", devNoticeTitle:"2026 テスト版", devNoticeBody:"開催日とチケット価格は暫定です。データはこの端末にのみ保存され、本番データベースには送信されません。",
+    welcomeTitle:"WGP#1へようこそ", welcomeSubtitle:"登録に使用する言語を選択してください", languageLabel:"言語", devVersion:"2026 開発版", heroSubtitle:"来場者登録・チケット販売", devNoticeTitle:"2026 テスト版", devNoticeBody:"開催日とチケット価格は暫定です。データはこの端末にのみ保存され、本番データベースには送信されません。",
     partVisitor:"パート1 · 来場者", visitorTitle:"来場者個別登録", visitorIntro:"チケット手続きの前に、来場者全員が一人ずつ登録してください。", registered:"登録済み", progressVisitor:"1 来場者情報", progressConsent:"2 同意確認", progressHandover:"3 スタッフへ返却",
     identityTitle:"本人情報", identitySubtitle:"個人情報", firstName:"名 *", lastName:"姓 *", ageGroup:"年齢層 *", selectOption:"— 選択してください —", ageUnder10:"10歳未満", age60Plus:"60歳以上", gender:"性別 *", male:"男性", female:"女性", nonBinary:"ノンバイナリー", preferNot:"回答しない",
     profileTitle:"居住地・来場者プロフィール", profileSubtitle:"来場者プロフィール", country:"居住国・地域 *", countrySelect:"— 国・地域を選択 —", city:"都道府県 / 市区町村 *", cityPlaceholder:"例：チョンブリー / パタヤ", previousAttendance:"WGP#1 来場経験 *", firstTime:"初めて", returning:"来場経験あり", discovery:"イベントを知ったきっかけ *", sourceMultiHint:"複数選択できます", influencer:"インフルエンサー / クリエイター", pattayaPromotion:"パタヤの広告", hotelTour:"ホテルまたは旅行会社", friendFamily:"友人または家族", previousEvent:"過去の WGP#1", other:"その他",
@@ -65,7 +65,7 @@ const translations = {
     peopleUnit:"名", ticketUnit:"枚", confirmedCount:"{count}名の来場者を確認しました", requiredError:"必須項目をすべて入力してください。", mismatchError:"チケット枚数を登録済み来場者数（{count}枚）に合わせてください。", perTicket:"1枚", noCharge:"無料", quantityFor:"{name}の枚数", ticketWeekdayDay:"1日券 — 平日", ticketWeekendDay:"1日券 — 週末", ticketWeekdayPass:"平日パッケージ", ticketProWeekend:"プロ・ウィークエンド", ticketAllEvent:"全日程パス", ticketComplimentary:"招待券"
   },
   ko: {
-    languageLabel:"언어", devVersion:"2026 개발 버전", heroSubtitle:"관람객 등록 및 티켓 판매", devNoticeTitle:"2026 테스트 버전", devNoticeBody:"행사 일정과 티켓 가격은 초안입니다. 데이터는 이 기기에만 저장되며 운영 데이터베이스로 전송되지 않습니다.",
+    welcomeTitle:"WGP#1에 오신 것을 환영합니다", welcomeSubtitle:"등록에 사용할 언어를 선택해 주세요", languageLabel:"언어", devVersion:"2026 개발 버전", heroSubtitle:"관람객 등록 및 티켓 판매", devNoticeTitle:"2026 테스트 버전", devNoticeBody:"행사 일정과 티켓 가격은 초안입니다. 데이터는 이 기기에만 저장되며 운영 데이터베이스로 전송되지 않습니다.",
     partVisitor:"파트 1 · 관람객", visitorTitle:"관람객 개별 등록", visitorIntro:"티켓 발권 전에 모든 관람객이 한 명씩 직접 등록해야 합니다.", registered:"등록 완료", progressVisitor:"1 관람객 정보", progressConsent:"2 동의 확인", progressHandover:"3 직원에게 반환",
     identityTitle:"신원 정보", identitySubtitle:"개인 정보", firstName:"이름 *", lastName:"성 *", ageGroup:"연령대 *", selectOption:"— 선택해 주세요 —", ageUnder10:"10세 미만", age60Plus:"60세 이상", gender:"성별 *", male:"남성", female:"여성", nonBinary:"논바이너리", preferNot:"응답하지 않음",
     profileTitle:"거주지 및 관람객 정보", profileSubtitle:"관람객 프로필", country:"거주 국가/지역 *", countrySelect:"— 국가/지역 선택 —", city:"주 / 도시 *", cityPlaceholder:"예: 촌부리 / 파타야", previousAttendance:"WGP#1 관람 경험 *", firstTime:"처음 방문", returning:"방문 경험 있음", discovery:"행사를 알게 된 경로 *", sourceMultiHint:"복수 선택 가능", influencer:"인플루언서 / 크리에이터", pattayaPromotion:"파타야 광고", hotelTour:"호텔 또는 여행사", friendFamily:"친구 또는 가족", previousEvent:"이전 WGP#1 행사", other:"기타",
@@ -77,7 +77,7 @@ const translations = {
     peopleUnit:"명", ticketUnit:"장", confirmedCount:"관람객 {count}명 확인 완료", requiredError:"필수 항목을 모두 입력해 주세요.", mismatchError:"티켓 수량은 등록 관람객 수({count}장)와 같아야 합니다.", perTicket:"장당", noCharge:"무료", quantityFor:"{name} 수량", ticketWeekdayDay:"1일권 — 평일", ticketWeekendDay:"1일권 — 주말", ticketWeekdayPass:"평일 패키지", ticketProWeekend:"프로 주말권", ticketAllEvent:"전 일정 패스", ticketComplimentary:"초대권"
   },
   fr: {
-    languageLabel:"Langue", devVersion:"VERSION DE DÉVELOPPEMENT 2026", heroSubtitle:"Inscription des visiteurs et vente de billets", devNoticeTitle:"Version de test 2026", devNoticeBody:"Les dates et tarifs sont provisoires. Les données restent sur cet appareil et ne sont pas envoyées à la base de production.",
+    welcomeTitle:"Bienvenue au WGP#1", welcomeSubtitle:"Choisissez la langue de votre inscription", languageLabel:"Langue", devVersion:"VERSION DE DÉVELOPPEMENT 2026", heroSubtitle:"Inscription des visiteurs et vente de billets", devNoticeTitle:"Version de test 2026", devNoticeBody:"Les dates et tarifs sont provisoires. Les données restent sur cet appareil et ne sont pas envoyées à la base de production.",
     partVisitor:"PARTIE 1 · VISITEUR", visitorTitle:"Inscription individuelle", visitorIntro:"Chaque visiteur doit s’inscrire séparément avant l’émission des billets par le personnel.", registered:"Inscrits", progressVisitor:"1 Informations", progressConsent:"2 Consentement", progressHandover:"3 Retour au personnel",
     identityTitle:"Identité", identitySubtitle:"Informations personnelles", firstName:"Prénom *", lastName:"Nom *", ageGroup:"Tranche d’âge *", selectOption:"— Veuillez sélectionner —", ageUnder10:"Moins de 10 ans", age60Plus:"60 ans ou plus", gender:"Genre *", male:"Homme", female:"Femme", nonBinary:"Non binaire", preferNot:"Préfère ne pas répondre",
     profileTitle:"Résidence et profil visiteur", profileSubtitle:"Profil du public", country:"Pays de résidence *", countrySelect:"— Choisir un pays —", city:"Province / Ville *", cityPlaceholder:"ex. Chonburi / Pattaya", previousAttendance:"Déjà venu au WGP#1 *", firstTime:"Première visite", returning:"Déjà venu", discovery:"Comment avez-vous connu l’événement ? *", sourceMultiHint:"Plusieurs réponses possibles", influencer:"Influenceur / Créateur", pattayaPromotion:"Publicité à Pattaya", hotelTour:"Hôtel ou voyagiste", friendFamily:"Ami ou famille", previousEvent:"Événement WGP#1 précédent", other:"Autre",
@@ -89,7 +89,7 @@ const translations = {
     peopleUnit:"personnes", ticketUnit:"billets", confirmedCount:"{count} visiteur(s) confirmé(s)", requiredError:"Veuillez remplir tous les champs obligatoires.", mismatchError:"Le nombre de billets doit correspondre aux visiteurs inscrits ({count}).", perTicket:"par billet", noCharge:"Gratuit", quantityFor:"Quantité pour {name}", ticketWeekdayDay:"Journée — Semaine", ticketWeekendDay:"Journée — Week-end", ticketWeekdayPass:"Forfait semaine", ticketProWeekend:"Week-end Pro", ticketAllEvent:"Pass événement complet", ticketComplimentary:"Invitation"
   },
   es: {
-    languageLabel:"Idioma", devVersion:"VERSIÓN DE DESARROLLO 2026", heroSubtitle:"Registro de visitantes y venta de entradas", devNoticeTitle:"Versión de prueba 2026", devNoticeBody:"Las fechas y los precios son provisionales. Los datos se guardan solo en este dispositivo y no se envían a la base de producción.",
+    welcomeTitle:"Bienvenido a WGP#1", welcomeSubtitle:"Selecciona el idioma para tu registro", languageLabel:"Idioma", devVersion:"VERSIÓN DE DESARROLLO 2026", heroSubtitle:"Registro de visitantes y venta de entradas", devNoticeTitle:"Versión de prueba 2026", devNoticeBody:"Las fechas y los precios son provisionales. Los datos se guardan solo en este dispositivo y no se envían a la base de producción.",
     partVisitor:"PARTE 1 · VISITANTE", visitorTitle:"Registro individual de visitantes", visitorIntro:"Cada visitante debe registrarse por separado antes de que el personal emita las entradas.", registered:"Registrados", progressVisitor:"1 Datos", progressConsent:"2 Consentimiento", progressHandover:"3 Devolver al personal",
     identityTitle:"Identidad", identitySubtitle:"Información personal", firstName:"Nombre *", lastName:"Apellidos *", ageGroup:"Grupo de edad *", selectOption:"— Selecciona —", ageUnder10:"Menos de 10 años", age60Plus:"60 años o más", gender:"Género *", male:"Hombre", female:"Mujer", nonBinary:"No binario", preferNot:"Prefiero no decirlo",
     profileTitle:"Residencia y perfil del visitante", profileSubtitle:"Perfil del público", country:"País de residencia *", countrySelect:"— Selecciona un país —", city:"Provincia / Ciudad *", cityPlaceholder:"p. ej., Chonburi / Pattaya", previousAttendance:"Asistencia previa a WGP#1 *", firstTime:"Primera vez", returning:"Ya ha asistido", discovery:"¿Cómo conociste el evento? *", sourceMultiHint:"Puedes seleccionar varias opciones", influencer:"Influencer / Creador", pattayaPromotion:"Publicidad en Pattaya", hotelTour:"Hotel o agencia de viajes", friendFamily:"Amigo o familiar", previousEvent:"Evento WGP#1 anterior", other:"Otro",
@@ -104,7 +104,7 @@ const translations = {
 
 const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
 const state = { attendees: [], ticketQuantities: {} };
-const screens = ["screen-visitor","screen-handover","screen-staff","screen-complete"];
+const screens = ["screen-welcome","screen-visitor","screen-handover","screen-staff","screen-complete"];
 const $ = id => document.getElementById(id);
 let currentLanguage = localStorage.getItem("wgp1-language") || "th";
 if (!translations[currentLanguage]) currentLanguage = "th";
@@ -153,12 +153,18 @@ function applyLanguage(language) {
   document.documentElement.lang = localeCodes[currentLanguage];
   document.title = `WGP#1 2026 — ${t("heroSubtitle")}`;
   $("language-select").value = currentLanguage;
+  document.querySelectorAll(".language-card").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.language === currentLanguage)));
   applyTranslations(document, currentLanguage);
   applyStaffEnglish();
   populateCountries(); renderTickets(); updateCounts();
 }
 
-function showScreen(id) { screens.forEach(screenId => $(screenId).classList.toggle("hidden", screenId !== id)); window.scrollTo({ top: 0, behavior: "smooth" }); }
+function showScreen(id) {
+  screens.forEach(screenId => $(screenId).classList.toggle("hidden", screenId !== id));
+  document.body.classList.toggle("welcome-mode", id === "screen-welcome");
+  document.body.classList.toggle("flow-active", id !== "screen-welcome");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 function setError(id, message) { const box = $(id); box.textContent = message; box.classList.toggle("hidden", !message); }
 function updateCounts() {
   const count = localizedNumber(state.attendees.length);
@@ -252,7 +258,7 @@ function updateTicketSummary() {
   $("calculated-total").textContent = `${staffNumber(summary.total)} THB`;
   if (document.activeElement !== $("s-amount")) $("s-amount").value = summary.total;
 }
-function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); renderTickets(); updateCounts(); showScreen("screen-visitor"); }
+function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
 function buildTransaction() {
   const ticketSummary = calculateTickets(); const transactionId = `JWC26-${new Date().toISOString().replace(/\D/g, "").slice(2,14)}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   return { transactionId, eventYear: APP_CONFIG.eventYear, dataMode: APP_CONFIG.dataMode, interfaceLanguage: currentLanguage, submittedAt: new Date().toISOString(), attendeeCount: state.attendees.length, attendees: state.attendees, sale: { staff: $("s-staff").value, paymentMethod: $("s-payment").value, ticketItems: ticketSummary.items, ticketQuantity: ticketSummary.quantity, calculatedTotal: ticketSummary.total, amountPaid: Number($("s-amount").value || 0), note: $("s-note").value.trim() } };
@@ -260,6 +266,10 @@ function buildTransaction() {
 function saveDevelopmentTransaction(transaction) { const key = "wgp1-jwc26-development-transactions"; const current = JSON.parse(localStorage.getItem(key) || "[]"); current.push(transaction); localStorage.setItem(key, JSON.stringify(current.slice(-200))); }
 
 $("language-select").addEventListener("change", event => applyLanguage(event.target.value));
+document.querySelectorAll(".language-card").forEach(button => button.addEventListener("click", () => {
+  applyLanguage(button.dataset.language);
+  showScreen("screen-visitor");
+}));
 $("v-age").addEventListener("change", updateGuardianPanel);
 $("v-marketing").addEventListener("change", updateMarketingEmailPanel);
 document.querySelectorAll('input[name="v-source"]').forEach(input => input.addEventListener("change", validateSourceSelection));

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f37021">
   <title>WGP#1 2026 — Visitor & Ticket Registration</title>
-  <link rel="stylesheet" href="styles.css?v=20260928-4">
+  <link rel="stylesheet" href="styles.css?v=20260928-5">
 </head>
 <body>
   <header class="hero" aria-label="WGP#1 World Cup">
@@ -31,7 +31,24 @@
   </div>
 
   <main>
-    <section id="screen-visitor" class="screen">
+    <section id="screen-welcome" class="screen welcome-screen">
+      <div class="welcome-card">
+        <p class="eyebrow">WGP#1 WATERJET WORLD CUP 2026</p>
+        <h2 data-i18n="welcomeTitle">ยินดีต้อนรับสู่ WGP#1</h2>
+        <p class="welcome-subtitle" data-i18n="welcomeSubtitle">กรุณาเลือกภาษาที่ต้องการใช้ในการลงทะเบียน</p>
+        <div class="language-grid" role="group" aria-label="Choose language">
+          <button class="language-card" type="button" data-language="th"><span class="language-flag" aria-hidden="true">🇹🇭</span><strong>ไทย</strong><small>Thai</small></button>
+          <button class="language-card" type="button" data-language="en"><span class="language-flag" aria-hidden="true">🇬🇧</span><strong>English</strong><small>English</small></button>
+          <button class="language-card" type="button" data-language="zh"><span class="language-flag" aria-hidden="true">🇨🇳</span><strong>中文</strong><small>Chinese</small></button>
+          <button class="language-card" type="button" data-language="ja"><span class="language-flag" aria-hidden="true">🇯🇵</span><strong>日本語</strong><small>Japanese</small></button>
+          <button class="language-card" type="button" data-language="ko"><span class="language-flag" aria-hidden="true">🇰🇷</span><strong>한국어</strong><small>Korean</small></button>
+          <button class="language-card" type="button" data-language="fr"><span class="language-flag" aria-hidden="true">🇫🇷</span><strong>Français</strong><small>French</small></button>
+          <button class="language-card" type="button" data-language="es"><span class="language-flag" aria-hidden="true">🇪🇸</span><strong>Español</strong><small>Spanish</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-visitor" class="screen hidden">
       <div class="page-head">
         <div><p class="eyebrow" data-i18n="partVisitor">ส่วนที่ 1 · ผู้เข้าชม</p><h2 data-i18n="visitorTitle">ลงทะเบียนผู้เข้าชมรายบุคคล</h2><p data-i18n="visitorIntro">ผู้เข้าชมทุกคนต้องกรอกข้อมูลของตนเองทีละคนก่อนเข้าสู่ขั้นตอนจำหน่ายตั๋ว</p></div>
         <div class="attendee-counter" aria-live="polite"><span data-i18n="registered">ลงทะเบียนแล้ว</span><strong id="visitor-count">0 คน</strong></div>
@@ -150,6 +167,6 @@
     <section id="screen-complete" class="screen hidden"><div class="complete-card"><div class="success-icon large">✓</div><p class="eyebrow" data-i18n="registrationComplete">ลงทะเบียนเสร็จสมบูรณ์</p><h2 data-i18n="completeTitle">ดำเนินการเสร็จสมบูรณ์</h2><p><span data-i18n="transactionNumber">หมายเลขรายการ</span> <strong id="transaction-id">—</strong></p><p class="muted" data-i18n="localDataNotice">ข้อมูลทดสอบถูกเก็บเฉพาะในอุปกรณ์นี้ และยังไม่ส่งเข้าฐานข้อมูลจริง</p><button id="next-customer" class="btn primary" type="button" data-i18n="nextGroup">เริ่มรายการผู้ชมชุดถัดไป</button></div></section>
   </main>
   <footer data-i18n="footer">© 2026 WGP#1 · สำเนาสำหรับพัฒนา</footer>
-  <script src="app.js?v=20260928-4"></script>
+  <script src="app.js?v=20260928-5"></script>
 </body>
 </html>
