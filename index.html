@@ -5,43 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WGP#1 — Visitor & Staff Registration</title>
 
-  <!-- Supabase JS Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.0/dist/umd/supabase.js"></script>
   <script>
-    const SUPABASE_URL = 'https://mhecpnqwwxspxfhdvzsc.supabase.co';
-    const SUPABASE_ANON_KEY =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oZWNwbnF3d3hzcHhmaGR2enNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwMDc0MjEsImV4cCI6MjA3ODU4MzQyMX0.ONaEMqU6BHuMSywE3Yvtbj78NqBbecI18amsD18Cgnc';
+    const REDESIGN_STORAGE_KEY = 'wgp1-ticket-sale-redesign-test-data';
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function submitToSupabase(payload) {
-      const { visitor, staff, submittedAt } = payload;
-
-      const { error } = await sb
-        .from('ticket_sales')
-        .insert({
-          submitted_at: submittedAt,
-          visitor_email: null,
-          visitor_first_name: visitor.firstName,
-          visitor_last_name: visitor.lastName,
-          visitor_gender: visitor.gender,
-          visitor_age_range: visitor.ageRange,
-          visitor_country: visitor.country,
-          visitor_city: visitor.city,
-          visitor_thai_province: null,
-          visitor_source: visitor.source,
-          visitor_consent: !!visitor.consent,
-          staff_name: staff.staffName,
-          ticket_type: staff.ticketType,
-          ticket_qty: Number(staff.ticketQty || 0),
-          amount_paid: Number(staff.amountPaid || 0),
-          pay_method: staff.payMethod || ''
-        });
-
-      if (error) {
-        console.error('[Supabase insert error]', error);
-        throw error;
-      }
+    async function submitToDevelopmentStorage(payload) {
+      const existing = JSON.parse(localStorage.getItem(REDESIGN_STORAGE_KEY) || '[]');
+      existing.push(payload);
+      localStorage.setItem(REDESIGN_STORAGE_KEY, JSON.stringify(existing.slice(-200)));
     }
   </script>
 
@@ -359,6 +329,9 @@
   </style>
 </head>
 <body>
+  <div style="background:#fff3e8;color:#843c0c;border-bottom:1px solid #ffd5b5;padding:10px 16px;text-align:center;font-size:14px;font-weight:800;">
+    REDESIGN TEST COPY · ข้อมูลทดสอบเก็บเฉพาะในอุปกรณ์นี้และไม่ส่งไปยังฐานข้อมูลจริง
+  </div>
   <div class="header">
     <img src="Header.png" alt="WGP#1 Waterjet World Cup 2025 Header">
   </div>
@@ -707,7 +680,7 @@
     recalc();
   })();
 
-  // Staff submit -> Supabase -> Complete
+  // Staff submit -> Local redesign test storage -> Complete
   document.getElementById('staff-form').addEventListener('submit', async function(e){
     e.preventDefault();
 
@@ -741,11 +714,11 @@
     btn.disabled = true;
 
     try {
-      await submitToSupabase(payload);
+      await submitToDevelopmentStorage(payload);
       show('screen-complete');
     } catch (err) {
       console.error('[Submit Error]', err);
-      alert('บันทึกลงระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      alert('บันทึกข้อมูลทดสอบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
     } finally {
       btn.textContent = old;
       btn.disabled = false;
