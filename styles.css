@@ -131,3 +131,87 @@ main{max-width:1320px}
   .flow-active .form-section,.flow-active .registration-action-panel{padding:18px 15px}
   .flow-active .source-options{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Balanced three-step iPad registration */
+.flow-active .hero,.flow-active .hero img{min-height:112px;height:112px}
+.flow-active .hero-copy{bottom:12px}
+.flow-active .hero-copy h1{margin:0;font-size:clamp(25px,3vw,34px)}
+.flow-active .hero-copy p,.flow-active .year-chip{display:none}
+.flow-active .language-switcher{top:11px;padding:5px 7px 5px 10px}
+.flow-active .language-switcher select{padding-top:6px;padding-bottom:6px}
+.flow-active .dev-notice{padding:6px 14px;font-size:12px}
+.flow-active main{padding-top:10px;padding-bottom:36px}
+.flow-active #screen-visitor .page-head{margin-bottom:8px}
+.flow-active #screen-visitor .page-head h2{font-size:26px}
+.flow-active #screen-visitor .page-head>div>p:last-child{display:none}
+.flow-active .attendee-counter{min-width:120px;padding:7px 12px}
+.flow-active .attendee-counter span{font-size:11px}
+.flow-active .attendee-counter strong{font-size:18px}
+.flow-active .visitor-saved-notice{margin-bottom:8px;padding:8px 12px;border-radius:12px}
+.flow-active .visitor-saved-notice .saved-check{flex-basis:28px;width:28px;height:28px;font-size:17px}
+.flow-active .visitor-saved-notice strong{font-size:13px}
+.flow-active .visitor-saved-notice div>span{font-size:11px}
+.flow-active .visitor-form-layout{grid-template-columns:minmax(360px,.9fr) minmax(0,1.35fr);gap:10px}
+.flow-active .form-column{gap:10px}
+.flow-active .form-section,.flow-active .registration-action-panel{padding:12px;border-radius:13px}
+.flow-active .section-title{gap:7px;margin-bottom:8px;padding-bottom:6px}
+.flow-active .section-title h3{font-size:15px}
+.flow-active .section-title p{font-size:10px}
+.flow-active .section-number{flex-basis:25px;width:25px;height:25px;font-size:11px}
+.flow-active .grid{gap:7px 9px}
+.flow-active input,.flow-active select,.flow-active textarea{min-height:37px;margin-top:3px;padding:6px 9px;font-size:14px;border-radius:9px}
+.flow-active .field-title{font-size:12px}
+.flow-active .field-hint{margin:-3px 0 4px;font-size:10px}
+.flow-active .visible-options{margin-top:2px}
+.flow-active .visible-options legend{margin-bottom:5px}
+.flow-active .option-grid{gap:5px}
+.flow-active .previous-options{max-width:none}
+.flow-active .profile-section .source-options{grid-template-columns:repeat(4,minmax(0,1fr))}
+.flow-active .option-tile span{min-height:34px;padding:5px 7px;gap:6px;border-width:1px;border-radius:8px;font-size:11px}
+.flow-active .option-tile span::before{flex-basis:15px;width:15px;height:15px;border-width:1.5px}
+.flow-active .privacy-box{padding:9px 10px;border-left-width:4px;border-radius:9px;font-size:11.5px;line-height:1.35}
+.flow-active .privacy-box p{margin-bottom:5px}
+.flow-active .check-line{gap:7px;margin-top:7px;padding:7px 9px;border-radius:9px}
+.flow-active .check-line span{font-size:12px;line-height:1.35}
+.flow-active .check-line input{width:17px;height:17px;min-height:17px}
+.flow-active .guardian-panel{margin:0;padding:12px;border-radius:13px}
+.flow-active .registration-action-panel{bottom:6px;padding:9px 10px}
+.flow-active .registration-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.flow-active .registration-action{grid-template-columns:30px minmax(0,1fr);min-height:52px;gap:7px;padding:7px 9px;border-radius:11px}
+.flow-active .registration-action-icon{width:27px;height:27px;font-size:17px}
+.flow-active .registration-action strong{font-size:12px;line-height:1.2}
+.flow-active .registration-action small{margin-top:2px;font-size:9.5px;line-height:1.2}
+.flow-active .remove-last-inline{margin-top:7px;font-size:11px}
+.attendee-list-button{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:7px;width:100%;margin:0 0 7px;padding:7px 10px;border:1px solid #f0b28c;border-radius:10px;background:#fff;color:#74340e;font:inherit;font-size:12px;font-weight:800;text-align:left;cursor:pointer}
+.attendee-list-button strong{display:grid;place-items:center;min-width:25px;height:25px;border-radius:999px;background:#fff0e6;color:var(--orange);font-size:12px}
+.attendee-list-button:hover{border-color:var(--orange);background:#fff8f2}
+body.modal-open{overflow:hidden}
+.attendee-modal{position:fixed;z-index:20;inset:0;display:grid;place-items:center;padding:20px}
+.attendee-modal-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(10,12,16,.6);cursor:pointer}
+.attendee-modal-card{position:relative;width:min(560px,100%);max-height:min(680px,85vh);overflow:auto;padding:24px;border-radius:20px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.attendee-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:13px}
+.attendee-modal-head h3{margin:3px 0 0;font-size:23px}
+.modal-close{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f3f5;color:#333;font-size:26px;line-height:1;cursor:pointer}
+.attendee-modal-count{margin:14px 0;color:var(--muted);font-size:14px}
+.attendee-list{display:grid;gap:8px}
+.attendee-list-item{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fafafa}
+.attendee-list-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;font-size:13px;font-weight:900}
+.attendee-list-item strong,.attendee-list-item small{display:block}
+.attendee-list-item strong{font-size:15px}
+.attendee-list-item small{margin-top:2px;color:var(--muted);font-size:12px}
+
+@media(min-width:901px) and (max-width:1180px){
+  .flow-active .visitor-form-layout{grid-template-columns:minmax(330px,.9fr) minmax(0,1.35fr)}
+  .flow-active .profile-section .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .flow-active .visitor-form-layout{grid-template-columns:1fr}
+  .flow-active .profile-section .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .flow-active .registration-action-panel{position:static}
+}
+@media(max-width:720px){
+  .flow-active .hero,.flow-active .hero img{min-height:104px;height:104px}
+  .flow-active .hero-copy h1{font-size:22px}
+  .flow-active .profile-section .source-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-active .registration-actions{grid-template-columns:1fr}
+}

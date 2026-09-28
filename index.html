@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f37021">
   <title>WGP#1 2026 — Visitor & Ticket Registration</title>
-  <link rel="stylesheet" href="styles.css?v=20260928-5">
+  <link rel="stylesheet" href="styles.css?v=20260928-6">
 </head>
 <body>
   <header class="hero" aria-label="WGP#1 World Cup">
@@ -62,7 +62,7 @@
 
         <div class="visitor-form-layout">
           <div class="form-column form-column-details">
-            <section class="form-section">
+            <section class="form-section identity-section">
               <div class="section-title"><span class="section-number">1</span><div><h3 data-i18n="identityTitle">ข้อมูลประจำตัว</h3><p data-i18n="identitySubtitle">ข้อมูลส่วนบุคคล</p></div></div>
               <div class="grid two">
                 <label><span class="field-title" data-i18n="firstName">ชื่อจริง *</span><input id="v-first" autocomplete="given-name" required maxlength="80"></label>
@@ -72,7 +72,21 @@
               </div>
             </section>
 
-            <section class="form-section">
+            <section class="form-section consent-section">
+              <div class="section-title"><span class="section-number">3</span><div><h3 data-i18n="privacyTitle">ประกาศความเป็นส่วนตัวและสื่อภายในงาน</h3><p data-i18n="privacySubtitle">ความเป็นส่วนตัวและสื่อภายในงาน</p></div></div>
+              <div class="privacy-box"><p data-i18n-html="privacyRegistration"><strong>การลงทะเบียนและจำหน่ายตั๋ว:</strong> WGP#1 เก็บข้อมูลที่จำเป็นเพื่อยืนยันตัวผู้เข้าชม บริหารตั๋ว วิเคราะห์จำนวนผู้ชม และรักษาความปลอดภัยภายในงาน โดยจัดเก็บตามระยะเวลาที่องค์กรกำหนดและให้สิทธิเจ้าของข้อมูลตามกฎหมาย</p><p data-i18n-html="privacyMedia"><strong>การบันทึกภาพ วิดีโอ และเสียง:</strong> ข้าพเจ้าอนุญาตและยินยอมให้ผู้จัดงาน WGP#1 รวมถึงช่างภาพ ผู้ผลิตสื่อ และผู้ได้รับมอบหมาย บันทึกภาพนิ่ง ภาพเคลื่อนไหว และเสียงของข้าพเจ้าภายในงาน และนำไปใช้หรือเผยแพร่ผ่านสื่อต่าง ๆ เพื่อรายงานและประชาสัมพันธ์กิจกรรมของ WGP#1</p></div>
+              <label class="check-line required-line"><input id="v-privacy" type="checkbox" required><span data-i18n="privacyAck">ข้าพเจ้ายินยอมตามประกาศความเป็นส่วนตัวและสื่อภายในงาน</span></label>
+              <label class="check-line optional-line"><input id="v-marketing" type="checkbox" aria-controls="marketing-email-panel" aria-expanded="false"><span data-i18n="marketingConsent">ฉันยินยอมรับข่าวสารการแข่งขันและกิจกรรมในอนาคตจาก WGP#1 (ไม่บังคับ)</span></label>
+              <div id="marketing-email-panel" class="marketing-email-panel hidden">
+                <div class="email-reveal-icon" aria-hidden="true">✉</div>
+                <label><span class="field-title" data-i18n="marketingEmail">อีเมลสำหรับรับข่าวสาร (ไม่บังคับ)</span><input id="v-email" type="email" autocomplete="email" inputmode="email" maxlength="254" disabled data-i18n-placeholder="marketingEmailPlaceholder" placeholder="name@example.com"></label>
+                <p data-i18n="marketingEmailHint">กรอกอีเมลหากต้องการให้ WGP#1 ส่งข่าวสารถึงคุณ โดยสามารถเว้นว่างได้</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="form-column form-column-profile">
+            <section class="form-section profile-section">
               <div class="section-title"><span class="section-number">2</span><div><h3 data-i18n="profileTitle">ที่อยู่อาศัยและข้อมูลผู้ชม</h3><p data-i18n="profileSubtitle">ข้อมูลผู้ชม</p></div></div>
               <div class="grid two">
                 <label><span class="field-title" data-i18n="country">ประเทศที่อาศัย *</span><select id="v-country" autocomplete="country-name" required></select></label>
@@ -105,7 +119,7 @@
             </section>
 
             <div id="guardian-panel" class="guardian-panel hidden">
-              <div class="section-title compact"><span class="section-number">3</span><div><h3 data-i18n="guardianTitle">ข้อมูลผู้ปกครอง</h3><p data-i18n="guardianSubtitle">จำเป็นสำหรับผู้เข้าชมอายุต่ำกว่า 20 ปี</p></div></div>
+              <div class="section-title compact"><span class="section-number">2A</span><div><h3 data-i18n="guardianTitle">ข้อมูลผู้ปกครอง</h3><p data-i18n="guardianSubtitle">จำเป็นสำหรับผู้เข้าชมอายุต่ำกว่า 20 ปี</p></div></div>
               <div class="grid two">
                 <label><span class="field-title" data-i18n="guardianName">ชื่อ–นามสกุลผู้ปกครอง *</span><input id="g-name" autocomplete="name" maxlength="160"></label>
                 <label><span class="field-title" data-i18n="relationship">ความสัมพันธ์ *</span><select id="g-relation"><option value="" data-i18n="selectOption">— กรุณาเลือก —</option><option value="parent" data-i18n="parent">บิดา/มารดา</option><option value="legal-guardian" data-i18n="legalGuardian">ผู้ปกครองตามกฎหมาย</option><option value="authorized-adult" data-i18n="authorizedAdult">ผู้ใหญ่ที่ได้รับมอบหมาย</option></select></label>
@@ -113,23 +127,10 @@
               </div>
               <label class="check-line"><input id="g-confirm" type="checkbox"><span data-i18n="guardianConfirm">ข้าพเจ้าเป็นผู้ปกครองหรือผู้มีอำนาจดำเนินการแทนผู้เยาว์ และยืนยันข้อมูลข้างต้น</span></label>
             </div>
-          </div>
-
-          <div class="form-column form-column-consent">
-            <section class="form-section consent-section">
-              <div class="section-title"><span class="section-number">4</span><div><h3 data-i18n="privacyTitle">ประกาศความเป็นส่วนตัวและสื่อภายในงาน</h3><p data-i18n="privacySubtitle">ความเป็นส่วนตัวและสื่อภายในงาน</p></div></div>
-              <div class="privacy-box"><p data-i18n-html="privacyRegistration"><strong>การลงทะเบียนและจำหน่ายตั๋ว:</strong> WGP#1 เก็บข้อมูลที่จำเป็นเพื่อยืนยันตัวผู้เข้าชม บริหารตั๋ว วิเคราะห์จำนวนผู้ชม และรักษาความปลอดภัยภายในงาน โดยจัดเก็บตามระยะเวลาที่องค์กรกำหนดและให้สิทธิเจ้าของข้อมูลตามกฎหมาย</p><p data-i18n-html="privacyMedia"><strong>การบันทึกภาพ วิดีโอ และเสียง:</strong> ข้าพเจ้าอนุญาตและยินยอมให้ผู้จัดงาน WGP#1 รวมถึงช่างภาพ ผู้ผลิตสื่อ และผู้ได้รับมอบหมาย บันทึกภาพนิ่ง ภาพเคลื่อนไหว และเสียงของข้าพเจ้าภายในงาน และนำไปใช้หรือเผยแพร่ผ่านสื่อต่าง ๆ เพื่อรายงานและประชาสัมพันธ์กิจกรรมของ WGP#1</p></div>
-              <label class="check-line required-line"><input id="v-privacy" type="checkbox" required><span data-i18n="privacyAck">ข้าพเจ้ายินยอมตามประกาศความเป็นส่วนตัวและสื่อภายในงาน</span></label>
-              <label class="check-line optional-line"><input id="v-marketing" type="checkbox" aria-controls="marketing-email-panel" aria-expanded="false"><span data-i18n="marketingConsent">ฉันยินยอมรับข่าวสารการแข่งขันและกิจกรรมในอนาคตจาก WGP#1 (ไม่บังคับ)</span></label>
-              <div id="marketing-email-panel" class="marketing-email-panel hidden">
-                <div class="email-reveal-icon" aria-hidden="true">✉</div>
-                <label><span class="field-title" data-i18n="marketingEmail">อีเมลสำหรับรับข่าวสาร (ไม่บังคับ)</span><input id="v-email" type="email" autocomplete="email" inputmode="email" maxlength="254" disabled data-i18n-placeholder="marketingEmailPlaceholder" placeholder="name@example.com"></label>
-                <p data-i18n="marketingEmailHint">กรอกอีเมลหากต้องการให้ WGP#1 ส่งข่าวสารถึงคุณ โดยสามารถเว้นว่างได้</p>
-              </div>
-            </section>
 
             <div class="registration-action-panel">
               <div id="visitor-error" class="form-error hidden" role="alert"></div>
+              <button id="view-attendees" class="attendee-list-button hidden" type="button"><span aria-hidden="true">👥</span><span data-i18n="viewRegistered">ดูผู้ชมที่ลงทะเบียนแล้ว</span><strong id="view-attendees-count">0</strong></button>
               <div class="registration-actions">
                 <button class="registration-action next-action" type="submit" name="visitor-action" value="next">
                   <span class="registration-action-icon" aria-hidden="true">＋</span>
@@ -145,6 +146,15 @@
           </div>
         </div>
       </form>
+
+      <div id="attendee-modal" class="attendee-modal hidden" role="dialog" aria-modal="true" aria-labelledby="attendee-modal-title">
+        <button class="attendee-modal-backdrop" type="button" aria-label="Close"></button>
+        <div class="attendee-modal-card">
+          <div class="attendee-modal-head"><div><p class="eyebrow" data-i18n="registered">ลงทะเบียนแล้ว</p><h3 id="attendee-modal-title" data-i18n="viewRegistered">ดูผู้ชมที่ลงทะเบียนแล้ว</h3></div><button id="close-attendee-modal" class="modal-close" type="button" aria-label="Close">×</button></div>
+          <p id="attendee-modal-count" class="attendee-modal-count"></p>
+          <div id="attendee-list" class="attendee-list"></div>
+        </div>
+      </div>
     </section>
 
     <section id="screen-handover" class="screen hidden"><div class="handover"><div class="handover-lock" data-i18n="staffNext">ขั้นตอนถัดไปสำหรับเจ้าหน้าที่</div><h2 data-i18n="handoverTitle">การลงทะเบียนผู้ชมเสร็จสมบูรณ์</h2><p class="handover-count"><strong id="handover-count">0</strong> <span data-i18n="visitors">ผู้เข้าชม</span></p><p data-i18n="handoverBody">กรุณาส่งคืนอุปกรณ์ให้เจ้าหน้าที่ เพื่อดำเนินการออกตั๋วเข้าชมงาน</p><button id="to-staff" class="btn dark" type="button" data-i18n="staffContinue">เจ้าหน้าที่ดำเนินการต่อ</button></div></section>
@@ -167,6 +177,6 @@
     <section id="screen-complete" class="screen hidden"><div class="complete-card"><div class="success-icon large">✓</div><p class="eyebrow" data-i18n="registrationComplete">ลงทะเบียนเสร็จสมบูรณ์</p><h2 data-i18n="completeTitle">ดำเนินการเสร็จสมบูรณ์</h2><p><span data-i18n="transactionNumber">หมายเลขรายการ</span> <strong id="transaction-id">—</strong></p><p class="muted" data-i18n="localDataNotice">ข้อมูลทดสอบถูกเก็บเฉพาะในอุปกรณ์นี้ และยังไม่ส่งเข้าฐานข้อมูลจริง</p><button id="next-customer" class="btn primary" type="button" data-i18n="nextGroup">เริ่มรายการผู้ชมชุดถัดไป</button></div></section>
   </main>
   <footer data-i18n="footer">© 2026 WGP#1 · สำเนาสำหรับพัฒนา</footer>
-  <script src="app.js?v=20260928-5"></script>
+  <script src="app.js?v=20260928-6"></script>
 </body>
 </html>
