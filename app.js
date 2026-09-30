@@ -147,6 +147,12 @@ translations.it = { ...translations.en,
   visitorConfirmed:"VISITATORE CONFERMATO", visitorSaved:"Visitatore salvato correttamente", viewRegistered:"Visualizza i visitatori registrati", addVisitor:"Registra il visitatore successivo", addVisitorHint:"Aggiungi un altro visitatore", finishVisitors:"Tutti i visitatori sono registrati", finishVisitorsHint:"Restituisci il dispositivo al personale per l'emissione dei biglietti", removeLast:"Rimuovi l'ultimo visitatore", staffNext:"PROSSIMO PASSAGGIO: PERSONALE", handoverTitle:"La registrazione dei visitatori è completata", visitors:"visitatori", handoverBody:"Restituisci questo dispositivo al personale affinché possa emettere i biglietti d'ingresso.", staffContinue:"Continua — personale", footer:"© 2026 WGP#1 · Copia di sviluppo", peopleUnit:"persone", confirmedCount:"{count} visitatore/i confermato/i", requiredError:"Completa tutti i campi obbligatori."
 };
 
+const otherLanguageLabels = {
+  th:"ภาษาอื่น ๆ", en:"Other languages", zh:"其他语言", ja:"その他の言語", ko:"기타 언어", fr:"Autres langues", es:"Otros idiomas",
+  de:"Weitere Sprachen", ru:"Другие языки", pt:"Outros idiomas", ar:"لغات أخرى", it:"Altre lingue"
+};
+Object.entries(otherLanguageLabels).forEach(([language, label]) => { translations[language].otherLanguages = label; });
+
 const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
 const state = { attendees: [], ticketQuantities: {} };
 const screens = ["screen-welcome","screen-visitor","screen-handover","screen-staff","screen-complete"];
@@ -412,7 +418,7 @@ function updateTicketSummary() {
   $("calculated-total").textContent = `${staffNumber(summary.total)} THB`;
   if (document.activeElement !== $("s-amount")) $("s-amount").value = summary.total;
 }
-function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); applyLanguage("en"); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
+function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); $("other-languages").open = false; applyLanguage("en"); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
 function buildTransaction() {
   const ticketSummary = calculateTickets(); const transactionId = `JWC26-${new Date().toISOString().replace(/\D/g, "").slice(2,14)}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   return { transactionId, eventYear: APP_CONFIG.eventYear, dataMode: APP_CONFIG.dataMode, interfaceLanguage: currentLanguage, submittedAt: new Date().toISOString(), attendeeCount: state.attendees.length, attendees: state.attendees, sale: { staff: $("s-staff").value, paymentMethod: $("s-payment").value, ticketItems: ticketSummary.items, ticketQuantity: ticketSummary.quantity, calculatedTotal: ticketSummary.total, amountPaid: Number($("s-amount").value || 0), note: $("s-note").value.trim() } };
