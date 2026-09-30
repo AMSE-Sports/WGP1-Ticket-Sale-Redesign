@@ -133,18 +133,72 @@ function applyStaffEnglish() {
   applyTranslations($("screen-complete"), "en");
 }
 
+let localizedCountries = [];
+let activeCountryIndex = -1;
+
+function closeCountrySuggestions() {
+  $("country-suggestions").classList.add("hidden");
+  $("v-country").setAttribute("aria-expanded", "false");
+  $("v-country").removeAttribute("aria-activedescendant");
+  activeCountryIndex = -1;
+}
+
+function selectCountry(country) {
+  const input = $("v-country");
+  input.value = country.name;
+  input.dataset.countryCode = country.code;
+  input.setCustomValidity("");
+  input.removeAttribute("aria-invalid");
+  closeCountrySuggestions();
+}
+
+function countrySearchText(value) {
+  return String(value || "").trim().toLocaleLowerCase(localeCodes[currentLanguage]);
+}
+
+function renderCountrySuggestions(query = "") {
+  const suggestions = $("country-suggestions");
+  const search = countrySearchText(query);
+  const matches = localizedCountries.filter(country => {
+    return !search || countrySearchText(country.name).includes(search) || countrySearchText(country.englishName).includes(search) || country.code.toLowerCase().includes(search);
+  }).slice(0, 12);
+
+  suggestions.textContent = "";
+  matches.forEach((country, index) => {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.id = `country-option-${index}`;
+    option.className = "country-suggestion";
+    option.setAttribute("role", "option");
+    const name = document.createElement("span"); name.textContent = country.name;
+    const code = document.createElement("small"); code.textContent = country.code;
+    option.append(name, code);
+    option.addEventListener("mousedown", event => event.preventDefault());
+    option.addEventListener("click", () => selectCountry(country));
+    suggestions.appendChild(option);
+  });
+
+  suggestions.classList.toggle("hidden", matches.length === 0);
+  $("v-country").setAttribute("aria-expanded", String(matches.length > 0));
+  activeCountryIndex = -1;
+}
+
 function populateCountries() {
-  const select = $("v-country");
-  const selected = select.value || "TH";
+  const input = $("v-country");
+  const selectedCode = input.dataset.countryCode || "";
   const displayNames = new Intl.DisplayNames([localeCodes[currentLanguage]], { type: "region" });
+  const englishDisplayNames = new Intl.DisplayNames([localeCodes.en], { type: "region" });
   const collator = new Intl.Collator(localeCodes[currentLanguage]);
-  const countries = countryCodes.map(code => ({ code, name: displayNames.of(code) || code })).sort((a, b) => collator.compare(a.name, b.name));
-  const thailand = countries.find(country => country.code === "TH");
-  const ordered = thailand ? [thailand, ...countries.filter(country => country.code !== "TH")] : countries;
-  select.textContent = "";
-  const placeholder = document.createElement("option"); placeholder.value = ""; placeholder.textContent = t("countrySelect"); select.appendChild(placeholder);
-  ordered.forEach(country => { const option = document.createElement("option"); option.value = country.code; option.textContent = country.name; select.appendChild(option); });
-  select.value = countryCodes.includes(selected) ? selected : "TH";
+  localizedCountries = countryCodes.map(code => ({ code, name: displayNames.of(code) || code, englishName: englishDisplayNames.of(code) || code })).sort((a, b) => collator.compare(a.name, b.name));
+  if (selectedCode) {
+    const selectedCountry = localizedCountries.find(country => country.code === selectedCode);
+    input.value = selectedCountry?.name || "";
+    if (!selectedCountry) input.dataset.countryCode = "";
+  } else {
+    input.value = "";
+  }
+  input.setCustomValidity("");
+  closeCountrySuggestions();
 }
 
 function applyLanguage(language) {
@@ -214,11 +268,11 @@ function updateGuardianPanel() { const required = isMinorAgeGroup($("v-age").val
 function readVisitor() {
   const ageGroup = $("v-age").value;
   const minor = isMinorAgeGroup(ageGroup);
-  const code = $("v-country").value;
+  const code = $("v-country").dataset.countryCode || "";
   return {
     attendeeId: crypto.randomUUID ? crypto.randomUUID() : `ATT-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     firstName: $("v-first").value.trim(), lastName: $("v-last").value.trim(), ageGroup, gender: $("v-gender").value,
-    countryCode: code, countryName: new Intl.DisplayNames([localeCodes[currentLanguage]], { type: "region" }).of(code), city: $("v-city").value.trim(),
+    countryCode: code, countryName: $("v-country").value.trim(), city: $("v-city").value.trim(),
     previousAttendance: document.querySelector('input[name="v-previous"]:checked')?.value || "",
     marketingSources: [...document.querySelectorAll('input[name="v-source"]:checked')].map(input => input.value),
     contactEmail: $("v-marketing").checked && $("v-email").value.trim() ? $("v-email").value.trim() : null,
@@ -239,6 +293,17 @@ function validateSourceSelection() {
   if (options[0]) options[0].setCustomValidity(hasSelection ? "" : t("requiredError"));
   return hasSelection;
 }
+function validateCountrySelection() {
+  const input = $("v-country");
+  if (!input.dataset.countryCode && input.value.trim()) {
+    const search = countrySearchText(input.value);
+    const exactMatch = localizedCountries.find(country => countrySearchText(country.name) === search || countrySearchText(country.englishName) === search || country.code.toLowerCase() === search);
+    if (exactMatch) selectCountry(exactMatch);
+  }
+  const valid = Boolean(input.dataset.countryCode);
+  input.setCustomValidity(valid ? "" : t("requiredError"));
+  return valid;
+}
 function updateMarketingEmailPanel() {
   const enabled = $("v-marketing").checked;
   $("marketing-email-panel").classList.toggle("hidden", !enabled);
@@ -247,15 +312,17 @@ function updateMarketingEmailPanel() {
   if (!enabled) $("v-email").value = "";
 }
 function hasVisitorDraft() {
-  const textOrSelectValues = ["v-first","v-last","v-age","v-gender","v-city","v-email","g-name","g-relation","g-phone"];
+  const textOrSelectValues = ["v-first","v-last","v-age","v-gender","v-country","v-city","v-email","g-name","g-relation","g-phone"];
   const hasEnteredValue = textOrSelectValues.some(id => String($(id).value || "").trim());
-  const countryChanged = $("v-country").value && $("v-country").value !== "TH";
   const hasCheckedOption = Boolean(document.querySelector('input[name="v-previous"]:checked, input[name="v-source"]:checked'));
-  return hasEnteredValue || countryChanged || hasCheckedOption || $("v-privacy").checked || $("v-marketing").checked || $("g-confirm").checked;
+  return hasEnteredValue || hasCheckedOption || $("v-privacy").checked || $("v-marketing").checked || $("g-confirm").checked;
 }
 function resetVisitorForm(hideSavedNotice = true) {
   $("visitor-form").reset();
-  $("v-country").value = "TH";
+  $("v-country").value = "";
+  $("v-country").dataset.countryCode = "";
+  $("v-country").setCustomValidity("");
+  closeCountrySuggestions();
   updateGuardianPanel();
   updateMarketingEmailPanel();
   setError("visitor-error", "");
@@ -311,6 +378,34 @@ document.querySelectorAll(".language-card").forEach(button => button.addEventLis
 }));
 $("v-age").addEventListener("change", updateGuardianPanel);
 $("v-marketing").addEventListener("change", updateMarketingEmailPanel);
+$("v-country").addEventListener("focus", event => renderCountrySuggestions(event.currentTarget.value));
+$("v-country").addEventListener("input", event => {
+  event.currentTarget.dataset.countryCode = "";
+  event.currentTarget.setCustomValidity("");
+  renderCountrySuggestions(event.currentTarget.value);
+});
+$("v-country").addEventListener("keydown", event => {
+  let options = [...document.querySelectorAll(".country-suggestion")];
+  if (!options.length && event.key === "ArrowDown") {
+    renderCountrySuggestions(event.currentTarget.value);
+    options = [...document.querySelectorAll(".country-suggestion")];
+  }
+  if ((event.key === "ArrowDown" || event.key === "ArrowUp") && options.length) {
+    event.preventDefault();
+    const direction = event.key === "ArrowDown" ? 1 : -1;
+    activeCountryIndex = (activeCountryIndex + direction + options.length) % options.length;
+    options.forEach((option, index) => option.classList.toggle("active", index === activeCountryIndex));
+    const activeOption = options[activeCountryIndex];
+    event.currentTarget.setAttribute("aria-activedescendant", activeOption.id);
+    activeOption.scrollIntoView({ block: "nearest" });
+  } else if (event.key === "Enter" && activeCountryIndex >= 0 && options[activeCountryIndex]) {
+    event.preventDefault();
+    options[activeCountryIndex].click();
+  } else if (event.key === "Escape") {
+    closeCountrySuggestions();
+  }
+});
+document.addEventListener("click", event => { if (!event.target.closest(".country-combobox")) closeCountrySuggestions(); });
 document.querySelectorAll('input[name="v-source"]').forEach(input => input.addEventListener("change", validateSourceSelection));
 $("visitor-form").addEventListener("submit", event => {
   event.preventDefault();
@@ -324,6 +419,7 @@ $("visitor-form").addEventListener("submit", event => {
     return;
   }
 
+  validateCountrySelection();
   validateSourceSelection();
   if (!validateForm(event.currentTarget, "visitor-error")) return;
 
