@@ -418,7 +418,12 @@ function updateTicketSummary() {
   $("calculated-total").textContent = `${staffNumber(summary.total)} THB`;
   if (document.activeElement !== $("s-amount")) $("s-amount").value = summary.total;
 }
-function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); $("other-languages").open = false; applyLanguage("en"); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
+function setOtherLanguagesExpanded(expanded) {
+  $("other-language-panel").classList.toggle("hidden", !expanded);
+  $("toggle-other-languages").setAttribute("aria-expanded", String(expanded));
+  $("toggle-other-languages").querySelector("small").textContent = expanded ? "−" : "＋";
+}
+function resetAll() { state.attendees = []; state.ticketQuantities = {}; $("staff-form").reset(); resetVisitorForm(); closeAttendeeModal(); setOtherLanguagesExpanded(false); applyLanguage("en"); renderTickets(); updateCounts(); showScreen("screen-welcome"); }
 function buildTransaction() {
   const ticketSummary = calculateTickets(); const transactionId = `JWC26-${new Date().toISOString().replace(/\D/g, "").slice(2,14)}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   return { transactionId, eventYear: APP_CONFIG.eventYear, dataMode: APP_CONFIG.dataMode, interfaceLanguage: currentLanguage, submittedAt: new Date().toISOString(), attendeeCount: state.attendees.length, attendees: state.attendees, sale: { staff: $("s-staff").value, paymentMethod: $("s-payment").value, ticketItems: ticketSummary.items, ticketQuantity: ticketSummary.quantity, calculatedTotal: ticketSummary.total, amountPaid: Number($("s-amount").value || 0), note: $("s-note").value.trim() } };
@@ -426,7 +431,9 @@ function buildTransaction() {
 function saveDevelopmentTransaction(transaction) { const key = "wgp1-jwc26-development-transactions"; const current = JSON.parse(localStorage.getItem(key) || "[]"); current.push(transaction); localStorage.setItem(key, JSON.stringify(current.slice(-200))); }
 
 $("language-select").addEventListener("change", event => applyLanguage(event.target.value));
+$("toggle-other-languages").addEventListener("click", event => setOtherLanguagesExpanded(event.currentTarget.getAttribute("aria-expanded") !== "true"));
 document.querySelectorAll(".language-card").forEach(button => button.addEventListener("click", () => {
+  if (!button.dataset.language) return;
   applyLanguage(button.dataset.language);
   showScreen("screen-visitor");
 }));
