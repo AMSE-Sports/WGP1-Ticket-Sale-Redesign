@@ -230,3 +230,29 @@ body.modal-open{overflow:hidden}
 .country-suggestion{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:9px 10px;border:0;border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .country-suggestion:hover,.country-suggestion.active{background:#fff0e6;color:#9b3e08}
 .country-suggestion small{color:#7b8492;font-size:11px;font-weight:800;letter-spacing:.08em}
+
+/* Compact welcome screen with twelve visible language choices */
+.welcome-mode .hero,.welcome-mode .hero img{min-height:108px;height:108px}
+.welcome-mode .hero-copy{bottom:12px}
+.welcome-mode .hero-copy h1{margin:0;font-size:clamp(25px,3.2vw,34px);letter-spacing:-1px}
+.welcome-mode .hero-copy p,.welcome-mode .year-chip{display:none}
+.welcome-mode main{padding-top:18px;padding-bottom:34px}
+.welcome-mode .welcome-screen{min-height:auto}
+.welcome-mode .welcome-card{width:min(1180px,100%);padding:22px 26px;border-radius:20px}
+.welcome-mode .welcome-card h2{margin:3px 0;font-size:clamp(26px,3vw,38px)}
+.welcome-mode .welcome-subtitle{margin-bottom:15px;font-size:16px}
+.welcome-mode .language-grid{gap:9px}
+.welcome-mode .language-card{min-height:88px;padding:9px 8px;border-radius:13px}
+.welcome-mode .language-flag{font-size:30px}
+.welcome-mode .language-card strong{margin-top:4px;font-size:15px}
+.welcome-mode .language-card small{font-size:10px}
+html[dir="rtl"] .hero-copy{text-align:right}
+
+@media(max-width:720px){
+  .welcome-mode .hero,.welcome-mode .hero img{min-height:94px;height:94px}
+  .welcome-mode .hero-copy h1{font-size:21px}
+  .welcome-mode main{padding-top:12px}
+  .welcome-mode .welcome-card{padding:18px 13px}
+  .welcome-mode .language-card{min-height:78px}
+  .welcome-mode .language-flag{font-size:27px}
+}
