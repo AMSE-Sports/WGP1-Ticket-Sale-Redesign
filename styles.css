@@ -232,6 +232,58 @@ body.modal-open{overflow:hidden}
 .country-suggestion:hover,.country-suggestion.active{background:#fff0e6;color:#9b3e08}
 .country-suggestion small{color:#7b8492;font-size:11px;font-weight:800;letter-spacing:.08em}
 
+/* Five-step iPad registration */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.flow-active .five-step-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:10px;align-items:start}
+.flow-active .five-step-layout .form-column{display:grid;gap:10px}
+.flow-active .five-step-layout .form-section{padding:11px 12px}
+.flow-active .five-step-layout .section-title{margin-bottom:7px}
+.flow-active .five-step-layout .visible-options{margin:0;padding:0;border:0}
+.flow-active .five-step-layout .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.flow-active .five-step-layout .attendance-section .previous-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+.privacy-details{border:1px solid #dde1e7;border-radius:9px;background:#f8f9fb;overflow:hidden}
+.privacy-details summary{position:relative;padding:8px 30px 8px 10px;color:#3d4653;font-size:11px;font-weight:800;cursor:pointer;list-style:none}
+.privacy-details summary::-webkit-details-marker{display:none}
+.privacy-details summary::after{content:"＋";position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--orange);font-size:15px}
+.privacy-details[open] summary::after{content:"−"}
+.privacy-details .privacy-box{margin:0;border-radius:0;border-left:0;border-top:1px solid #dde1e7;background:#fff}
+.flow-active .five-step-layout .check-line{margin-top:6px;padding:6px 8px}
+.flow-active .five-step-layout .check-line span{font-size:11px}
+.flow-active .five-step-layout .marketing-email-panel{grid-template-columns:28px 1fr;margin-bottom:0;padding:8px;gap:3px 7px}
+.flow-active .five-step-layout .email-reveal-icon{width:27px;height:27px;font-size:14px}
+.flow-active .five-step-layout .marketing-email-panel p{font-size:9px}
+.flow-active .form-wide-actions{grid-column:1/-1;position:static;padding:8px 10px}
+.flow-active .form-wide-actions .registration-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.flow-active .form-wide-actions .attendee-list-button{margin-bottom:6px}
+
+@media(min-width:760px) and (max-width:1180px){
+  .flow-active .five-step-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+  .flow-active .five-step-layout .identity-section,
+  .flow-active .five-step-layout .demographics-section,
+  .flow-active .five-step-layout .guardian-panel,
+  .flow-active .five-step-layout .attendance-section,
+  .flow-active .five-step-layout .source-section,
+  .flow-active .five-step-layout .consent-section,
+  .flow-active .five-step-layout .form-wide-actions{order:0}
+  .flow-active .five-step-layout .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .flow-active .five-step-layout .option-tile span{font-size:10px}
+}
+
+@media(max-width:759px){
+  .grid.three{grid-template-columns:1fr}
+  .flow-active .five-step-layout{display:flex;flex-direction:column}
+  .flow-active .five-step-layout .form-column{display:contents}
+  .flow-active .five-step-layout .identity-section{order:1}
+  .flow-active .five-step-layout .demographics-section{order:2}
+  .flow-active .five-step-layout .guardian-panel{order:3}
+  .flow-active .five-step-layout .attendance-section{order:4}
+  .flow-active .five-step-layout .source-section{order:5}
+  .flow-active .five-step-layout .consent-section{order:6}
+  .flow-active .five-step-layout .form-wide-actions{order:7;width:100%}
+  .flow-active .form-wide-actions .registration-actions{grid-template-columns:1fr}
+}
+
 /* Compact welcome screen with twelve visible language choices */
 .welcome-mode .hero,.welcome-mode .hero img{min-height:108px;height:108px}
 .welcome-mode .hero-copy{bottom:12px}
