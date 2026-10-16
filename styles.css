@@ -314,3 +314,52 @@ html[dir="rtl"] .hero-copy{text-align:right}
   .welcome-mode .language-flag{font-size:27px}
   .other-language-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Large, sequential five-step form */
+.flow-active .five-step-layout{display:flex;flex-direction:column;gap:18px}
+.flow-active .five-step-layout .form-column{display:contents}
+.flow-active .five-step-layout .identity-section{order:1}
+.flow-active .five-step-layout .demographics-section{order:2}
+.flow-active .five-step-layout .guardian-panel{order:3}
+.flow-active .five-step-layout .attendance-section{order:4}
+.flow-active .five-step-layout .source-section{order:5}
+.flow-active .five-step-layout .consent-section{order:6}
+.flow-active .five-step-layout .form-wide-actions{order:7;width:100%}
+.flow-active .five-step-layout .form-section{padding:24px 26px;border-radius:18px}
+.flow-active .five-step-layout .guardian-panel{padding:24px 26px;border-radius:18px}
+.flow-active .five-step-layout .section-title{gap:13px;margin-bottom:18px;padding-bottom:13px}
+.flow-active .five-step-layout .section-number{flex-basis:42px;width:42px;height:42px;font-size:18px}
+.flow-active .five-step-layout .section-title h3{font-size:22px}
+.flow-active .five-step-layout .section-title p{font-size:14px}
+.flow-active .five-step-layout .grid{gap:16px}
+.flow-active .five-step-layout input,
+.flow-active .five-step-layout select{min-height:54px;padding:12px 14px;border-radius:11px;font-size:17px}
+.flow-active .five-step-layout .field-title{font-size:16px}
+.flow-active .five-step-layout .option-grid{gap:11px}
+.flow-active .five-step-layout .source-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.flow-active .five-step-layout .option-tile span{min-height:52px;padding:11px 13px;gap:10px;border-width:2px;border-radius:11px;font-size:15px}
+.flow-active .five-step-layout .option-tile span::before{flex-basis:21px;width:21px;height:21px;border-width:2px}
+.flow-active .five-step-layout .privacy-details summary{padding:13px 40px 13px 15px;font-size:15px}
+.flow-active .five-step-layout .privacy-box{padding:17px 18px;font-size:14px;line-height:1.5}
+.flow-active .five-step-layout .check-line{gap:12px;margin-top:12px;padding:14px 15px}
+.flow-active .five-step-layout .check-line span{font-size:16px}
+.flow-active .five-step-layout .check-line input{width:23px;height:23px;min-height:23px}
+.flow-active .five-step-layout .marketing-email-panel{grid-template-columns:44px 1fr;padding:18px;gap:5px 13px}
+.flow-active .five-step-layout .email-reveal-icon{width:40px;height:40px;font-size:20px}
+.flow-active .five-step-layout .marketing-email-panel p{font-size:13px}
+.flow-active .form-wide-actions{padding:16px 18px;border-radius:16px}
+.flow-active .form-wide-actions .registration-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.flow-active .form-wide-actions .registration-action{min-height:78px;padding:13px 16px}
+.flow-active .form-wide-actions .registration-action-icon{width:42px;height:42px;font-size:25px}
+.flow-active .form-wide-actions .registration-action strong{font-size:17px}
+.flow-active .form-wide-actions .registration-action small{font-size:13px}
+
+@media(max-width:759px){
+  .flow-active .five-step-layout{gap:13px}
+  .flow-active .five-step-layout .form-section{padding:20px 17px}
+  .flow-active .five-step-layout .guardian-panel{padding:20px 17px}
+  .flow-active .five-step-layout .grid.two,
+  .flow-active .five-step-layout .grid.three{grid-template-columns:1fr}
+  .flow-active .five-step-layout .source-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-active .form-wide-actions .registration-actions{grid-template-columns:1fr}
+}
