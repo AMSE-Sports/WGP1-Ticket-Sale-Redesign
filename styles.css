@@ -316,7 +316,10 @@ html[dir="rtl"] .hero-copy{text-align:right}
 }
 
 /* Large, sequential five-step form */
-.flow-active .five-step-layout{display:flex;flex-direction:column;gap:18px}
+.flow-active .five-step-layout{display:flex;flex-direction:column;align-items:stretch;gap:18px}
+.flow-active .five-step-layout>.form-column,
+.flow-active .five-step-layout .form-section,
+.flow-active .five-step-layout .guardian-panel{width:100%}
 .flow-active .five-step-layout .form-column{display:contents}
 .flow-active .five-step-layout .identity-section{order:1}
 .flow-active .five-step-layout .demographics-section{order:2}
