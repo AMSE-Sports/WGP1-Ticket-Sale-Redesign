@@ -169,6 +169,22 @@ const fiveStepLabels = {
 };
 Object.entries(fiveStepLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
 
+const sourceChannelLabels = {
+  th: { onlineSocial:"Online Social", newspaperTelevision:"หนังสือพิมพ์หรือโทรทัศน์" },
+  en: { onlineSocial:"Online Social", newspaperTelevision:"Newspaper or television" },
+  zh: { onlineSocial:"网络与社交媒体", newspaperTelevision:"报纸或电视" },
+  ja: { onlineSocial:"オンライン・SNS", newspaperTelevision:"新聞またはテレビ" },
+  ko: { onlineSocial:"온라인 및 소셜 미디어", newspaperTelevision:"신문 또는 텔레비전" },
+  fr: { onlineSocial:"Réseaux sociaux en ligne", newspaperTelevision:"Journal ou télévision" },
+  es: { onlineSocial:"Redes sociales en línea", newspaperTelevision:"Periódico o televisión" },
+  de: { onlineSocial:"Online und soziale Medien", newspaperTelevision:"Zeitung oder Fernsehen" },
+  ru: { onlineSocial:"Интернет и социальные сети", newspaperTelevision:"Газета или телевидение" },
+  pt: { onlineSocial:"Online e redes sociais", newspaperTelevision:"Jornal ou televisão" },
+  ar: { onlineSocial:"الإنترنت ووسائل التواصل الاجتماعي", newspaperTelevision:"الصحف أو التلفزيون" },
+  it: { onlineSocial:"Online e social media", newspaperTelevision:"Giornale o televisione" }
+};
+Object.entries(sourceChannelLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
+
 const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
 const state = { attendees: [], ticketQuantities: {} };
 const screens = ["screen-welcome","screen-visitor","screen-handover","screen-staff","screen-complete"];

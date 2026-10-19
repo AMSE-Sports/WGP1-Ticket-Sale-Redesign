@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f37021">
   <title>WGP#1 2026 — Visitor & Ticket Registration</title>
-  <link rel="stylesheet" href="styles.css?v=20261016-2">
+  <link rel="stylesheet" href="styles.css?v=20261019-1">
 </head>
 <body>
   <header class="hero" aria-label="WGP#1 World Cup">
@@ -119,24 +119,18 @@
               <fieldset class="visible-options">
                 <legend class="sr-only" data-i18n="discovery">ช่องทางหลักที่ทำให้มางาน *</legend>
                 <div class="option-grid source-options">
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="facebook"><span>Facebook</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="instagram"><span>Instagram</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="tiktok"><span>TikTok</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="youtube"><span>YouTube</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="google"><span>Google / Search</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="influencer"><span data-i18n="influencer">อินฟลูเอนเซอร์ / ครีเอเตอร์</span></label>
+                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="online-social"><span data-i18n="onlineSocial">Online Social</span></label>
                   <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="pattaya-promotion"><span data-i18n="pattayaPromotion">ป้ายหรือสื่อในพัทยา</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="hotel-tour"><span data-i18n="hotelTour">โรงแรมหรือบริษัททัวร์</span></label>
                   <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="friend-family"><span data-i18n="friendFamily">เพื่อนหรือครอบครัว</span></label>
                   <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="previous-event"><span data-i18n="previousEvent">งาน WGP#1 ครั้งก่อน</span></label>
-                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="other"><span data-i18n="other">อื่น ๆ</span></label>
+                  <label class="option-tile checkbox-tile"><input type="checkbox" name="v-source" value="newspaper-television"><span data-i18n="newspaperTelevision">จากหนังสือพิมพ์หรือโทรทัศน์</span></label>
                 </div>
               </fieldset>
             </section>
 
             <section class="form-section consent-section">
               <div class="section-title"><span class="section-number">5</span><div><h3 data-i18n="consentTitle">ความยินยอม</h3></div></div>
-              <details class="privacy-details" open>
+              <details class="privacy-details">
                 <summary data-i18n="privacyDetailsToggle">อ่านประกาศความเป็นส่วนตัวและสื่อภายในงาน</summary>
                 <div class="privacy-box"><p data-i18n-html="privacyRegistration"><strong>การลงทะเบียนและจำหน่ายตั๋ว:</strong> WGP#1 เก็บข้อมูลที่จำเป็นเพื่อยืนยันตัวผู้เข้าชม บริหารตั๋ว วิเคราะห์จำนวนผู้ชม และรักษาความปลอดภัยภายในงาน โดยจัดเก็บตามระยะเวลาที่องค์กรกำหนดและให้สิทธิเจ้าของข้อมูลตามกฎหมาย</p><p data-i18n-html="privacyMedia"><strong>การบันทึกภาพ วิดีโอ และเสียง:</strong> ข้าพเจ้าอนุญาตและยินยอมให้ผู้จัดงาน WGP#1 รวมถึงช่างภาพ ผู้ผลิตสื่อ และผู้ได้รับมอบหมาย บันทึกภาพนิ่ง ภาพเคลื่อนไหว และเสียงของข้าพเจ้าภายในงาน และนำไปใช้หรือเผยแพร่ผ่านสื่อต่าง ๆ เพื่อรายงานและประชาสัมพันธ์กิจกรรมของ WGP#1</p></div>
               </details>
@@ -198,6 +192,6 @@
     <section id="screen-complete" class="screen hidden"><div class="complete-card"><div class="success-icon large">✓</div><p class="eyebrow" data-i18n="registrationComplete">ลงทะเบียนเสร็จสมบูรณ์</p><h2 data-i18n="completeTitle">ดำเนินการเสร็จสมบูรณ์</h2><p><span data-i18n="transactionNumber">หมายเลขรายการ</span> <strong id="transaction-id">—</strong></p><p class="muted" data-i18n="localDataNotice">ข้อมูลทดสอบถูกเก็บเฉพาะในอุปกรณ์นี้ และยังไม่ส่งเข้าฐานข้อมูลจริง</p><button id="next-customer" class="btn primary" type="button" data-i18n="nextGroup">เริ่มรายการผู้ชมชุดถัดไป</button></div></section>
   </main>
   <footer data-i18n="footer">© 2026 WGP#1 · สำเนาสำหรับพัฒนา</footer>
-  <script src="app.js?v=20261015-1"></script>
+  <script src="app.js?v=20261019-1"></script>
 </body>
 </html>
