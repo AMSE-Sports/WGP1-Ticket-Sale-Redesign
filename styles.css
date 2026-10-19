@@ -369,20 +369,24 @@ html[dir="rtl"] .hero-copy{text-align:right}
 
 /* One-screen iPad flow: five compact rows in a clear top-to-bottom sequence */
 @media(min-width:760px){
+  body.flow-active{display:flex;min-height:100vh;flex-direction:column}
   .flow-active .hero,.flow-active .hero img{min-height:74px;height:74px}
   .flow-active .hero-copy{bottom:9px}
   .flow-active .hero-copy h1{font-size:25px}
   .flow-active .language-switcher{top:8px}
   .flow-active .dev-notice{padding:4px 12px;font-size:11px;line-height:1.25}
-  .flow-active main{padding-top:7px;padding-bottom:20px}
+  .flow-active main{display:flex;flex:1;width:100%;padding-top:7px;padding-bottom:7px}
+  .flow-active #screen-visitor{display:flex;flex:1;min-height:0;flex-direction:column}
+  .flow-active #visitor-form{display:flex;flex:1;min-height:0;flex-direction:column}
   .flow-active #screen-visitor .page-head{margin-bottom:6px}
   .flow-active #screen-visitor .page-head h2{font-size:23px;line-height:1.05}
   .flow-active .eyebrow{font-size:10px}
   .flow-active .attendee-counter{min-width:112px;padding:5px 10px}
   .flow-active .attendee-counter span{font-size:9px}
   .flow-active .attendee-counter strong{font-size:15px}
-  .flow-active .five-step-layout{gap:7px}
-  .flow-active .five-step-layout .form-section{padding:8px 12px;border-radius:11px}
+  .flow-active .five-step-layout{flex:1;min-height:0;justify-content:space-between;gap:7px}
+  .flow-active .five-step-layout .form-section{display:flex;flex:1 0 auto;flex-direction:column;justify-content:center;padding:8px 12px;border-radius:11px}
+  .flow-active .five-step-layout .consent-section{flex-grow:1.65}
   .flow-active .five-step-layout .section-title{gap:7px;margin-bottom:6px;padding-bottom:5px}
   .flow-active .five-step-layout .section-number{flex-basis:24px;width:24px;height:24px;font-size:11px}
   .flow-active .five-step-layout .section-title h3{font-size:14px;line-height:1.1}
@@ -408,4 +412,5 @@ html[dir="rtl"] .hero-copy{text-align:right}
   .flow-active .form-wide-actions .registration-action-icon{width:25px;height:25px;font-size:15px}
   .flow-active .form-wide-actions .registration-action strong{font-size:11px;line-height:1.15}
   .flow-active .form-wide-actions .registration-action small{margin-top:1px;font-size:8px;line-height:1.15}
+  .flow-active footer{flex:0 0 auto;padding:8px 22px;font-size:11px}
 }
