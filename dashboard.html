@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f37021" />
+    <title>WGP#1 Ticket Intelligence</title>
+    <link rel="stylesheet" href="dashboard.css?v=20261019-1" />
+  </head>
+  <body>
+    <header class="dash-header">
+      <div>
+        <p class="kicker">WGP#1 WATERJET WORLD CUP 2026</p>
+        <h1>Ticket Intelligence</h1>
+        <p>Visitor and onsite sales analytics</p>
+      </div>
+      <div class="header-actions">
+        <span id="connection-status" class="status waiting">Test database</span
+        ><button id="sign-out" class="ghost hidden" type="button">
+          Sign out</button
+        ><a class="ghost" href="index.html">Open registration</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="setup-panel" class="login-card hidden">
+        <span class="icon">⚙</span>
+        <h2>Test database setup required</h2>
+        <p>
+          The dashboard is ready. Add the test Supabase URL and anon key in
+          <code>supabase-config.js</code> to connect live data.
+        </p>
+      </section>
+
+      <section id="login-panel" class="login-card hidden">
+        <span class="icon">↗</span>
+        <p class="kicker">STAFF ACCESS</p>
+        <h2>Sign in to analytics</h2>
+        <p>Use an approved WGP#1 dashboard account.</p>
+        <form id="login-form">
+          <label
+            >Email<input
+              id="login-email"
+              type="email"
+              autocomplete="username"
+              required
+          /></label>
+          <label
+            >Password<input
+              id="login-password"
+              type="password"
+              autocomplete="current-password"
+              required
+          /></label>
+          <p id="login-error" class="error hidden"></p>
+          <button class="primary" type="submit">Sign in</button>
+        </form>
+      </section>
+
+      <section id="password-panel" class="login-card hidden">
+        <span class="icon">✓</span>
+        <p class="kicker">ACCOUNT ACTIVATION</p>
+        <h2>Create your dashboard password</h2>
+        <p>
+          Your invitation has been verified. Set a private password to finish
+          activating your WGP#1 analytics account.
+        </p>
+        <form id="password-form">
+          <label
+            >New password<input
+              id="new-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="12"
+              required
+          /></label>
+          <label
+            >Confirm password<input
+              id="confirm-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="12"
+              required
+          /></label>
+          <small class="form-hint"
+            >Use at least 12 characters. Do not share this password with
+            anyone.</small
+          >
+          <p id="password-error" class="error hidden"></p>
+          <button class="primary" type="submit">
+            Set password and open dashboard
+          </button>
+        </form>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="toolbar">
+          <div>
+            <p class="kicker">LIVE TEST DATA</p>
+            <h2>Sales overview</h2>
+            <p id="last-updated">Not loaded</p>
+          </div>
+          <div class="filters">
+            <label>From<input id="filter-from" type="date" /></label>
+            <label>To<input id="filter-to" type="date" /></label>
+            <label
+              >Staff<select id="filter-staff">
+                <option value="">All staff</option>
+              </select></label
+            >
+            <label
+              >Payment<select id="filter-payment">
+                <option value="">All payments</option>
+                <option value="cash">Cash</option>
+                <option value="qr-transfer">QR / Bank transfer</option>
+                <option value="complimentary">Complimentary</option>
+              </select></label
+            >
+            <button id="refresh-data" class="dark" type="button">
+              Refresh
+            </button>
+            <button id="export-csv" class="primary" type="button">
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi orange">
+            <span>Revenue</span><strong id="kpi-revenue">0 THB</strong
+            ><small>Amount paid</small>
+          </article>
+          <article class="kpi">
+            <span>Tickets</span><strong id="kpi-tickets">0</strong
+            ><small>Issued tickets</small>
+          </article>
+          <article class="kpi">
+            <span>Visitors</span><strong id="kpi-visitors">0</strong
+            ><small>Registered people</small>
+          </article>
+          <article class="kpi">
+            <span>Transactions</span><strong id="kpi-transactions">0</strong
+            ><small>Completed sales</small>
+          </article>
+          <article class="kpi">
+            <span>Average sale</span><strong id="kpi-average">0 THB</strong
+            ><small>Per transaction</small>
+          </article>
+          <article class="kpi">
+            <span>Returning visitors</span><strong id="kpi-returning">0%</strong
+            ><small>Audience loyalty</small>
+          </article>
+        </div>
+
+        <div class="analytics-grid">
+          <article class="panel wide">
+            <div class="panel-head">
+              <div>
+                <p class="kicker">SALES</p>
+                <h3>Revenue by day</h3>
+              </div>
+            </div>
+            <div id="chart-daily" class="bar-chart horizontal"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="kicker">AUDIENCE</p>
+                <h3>Top nationalities</h3>
+              </div>
+            </div>
+            <div id="chart-country" class="bar-chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="kicker">PROFILE</p>
+                <h3>Age groups</h3>
+              </div>
+            </div>
+            <div id="chart-age" class="bar-chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="kicker">MARKETING</p>
+                <h3>Discovery channels</h3>
+              </div>
+            </div>
+            <div id="chart-source" class="bar-chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="kicker">PRODUCT</p>
+                <h3>Ticket mix</h3>
+              </div>
+            </div>
+            <div id="chart-ticket" class="bar-chart"></div>
+          </article>
+        </div>
+
+        <article class="panel table-panel">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">TRANSACTIONS</p>
+              <h3>Recent ticket sales</h3>
+            </div>
+            <span id="result-count">0 records</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date & time</th>
+                  <th>Transaction</th>
+                  <th>Staff</th>
+                  <th>Payment</th>
+                  <th>Visitors</th>
+                  <th>Tickets</th>
+                  <th>Paid</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script src="supabase-config.js?v=20261019-2"></script>
+    <script src="dashboard.js?v=20261019-2"></script>
+  </body>
+</html>

@@ -49,6 +49,10 @@ main{max-width:1320px}
   .hero,.hero img{min-height:220px}
   .hero-copy{bottom:24px}
 }
+
+/* Staff data system entry point */
+.staff-head-actions{display:flex;align-items:center;gap:12px}.dashboard-link{display:inline-flex;min-height:42px;align-items:center;border:1px solid #d6d9df;border-radius:11px;padding:8px 13px;background:#fff;color:#252930;font-size:13px;font-weight:850;text-decoration:none;box-shadow:0 5px 18px rgba(16,24,40,.07)}.dashboard-link:hover{border-color:var(--orange);color:var(--orange-dark)}.btn[disabled]{cursor:wait;opacity:.62}
+@media(max-width:720px){.staff-head-actions{align-items:stretch;flex-direction:column}.dashboard-link{justify-content:center}}
 @media(max-width:900px){
   .visitor-form-layout{grid-template-columns:1fr}
   .registration-action-panel{position:static}

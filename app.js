@@ -2,7 +2,7 @@
 
 const APP_CONFIG = {
   eventYear: 2026,
-  dataMode: "local-development",
+  dataMode: window.WGP1_SUPABASE_CONFIG?.enabled ? "supabase-test" : "local-development",
   privacyNoticeVersion: "JWC26-DRAFT-06",
   ticketTypes: [
     { id: "weekday-day", nameKey: "ticketWeekdayDay", price: 250 },
@@ -566,7 +566,38 @@ document.querySelector(".attendee-modal-backdrop").addEventListener("click", clo
 document.addEventListener("keydown", event => { if (event.key === "Escape" && !$("attendee-modal").classList.contains("hidden")) closeAttendeeModal(); });
 $("to-staff").addEventListener("click", () => { renderTickets(); updateCounts(); showScreen("screen-staff"); });
 $("back-handover").addEventListener("click", () => showScreen("screen-handover"));
-$("staff-form").addEventListener("submit", event => { event.preventDefault(); if (!validateForm(event.currentTarget, "staff-error", "en")) return; const summary = calculateTickets(); if (summary.quantity !== state.attendees.length) { setError("staff-error", translate("en", "mismatchError", { count: staffNumber(state.attendees.length) })); return; } const transaction = buildTransaction(); saveDevelopmentTransaction(transaction); $("transaction-id").textContent = transaction.transactionId; setError("staff-error", ""); showScreen("screen-complete"); });
+$("staff-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!validateForm(event.currentTarget, "staff-error", "en")) return;
+  const summary = calculateTickets();
+  if (summary.quantity !== state.attendees.length) {
+    setError("staff-error", translate("en", "mismatchError", { count: staffNumber(state.attendees.length) }));
+    return;
+  }
+
+  const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+  const originalLabel = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = "Saving…";
+  setError("staff-error", "");
+
+  try {
+    const transaction = buildTransaction();
+    const result = await window.WGP1_DATA_SERVICE.saveTransaction(transaction);
+    saveDevelopmentTransaction(transaction);
+    $("transaction-id").textContent = transaction.transactionId;
+    $("storage-status").textContent = result.saved
+      ? "Saved securely to the isolated WGP#1 test database."
+      : "Test database connection is pending. This transaction was queued on this device.";
+    showScreen("screen-complete");
+  } catch (error) {
+    console.error("Ticket transaction save failed", error);
+    setError("staff-error", "The database could not be reached. The transaction was kept on this device; please try again before starting the next group.");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = originalLabel;
+  }
+});
 $("next-customer").addEventListener("click", resetAll);
 
 applyLanguage(currentLanguage);
