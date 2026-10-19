@@ -74,6 +74,7 @@ function readInviteSession() {
     refresh_token: params.get("refresh_token"),
     token_type: params.get("token_type") || "bearer",
     expires_in: Number(params.get("expires_in") || 0),
+    password_setup_required: true,
   });
   history.replaceState(
     {},
@@ -94,6 +95,7 @@ async function updatePassword(password) {
     method: "PUT",
     body: JSON.stringify({ password }),
   });
+  setSession({ ...session, password_setup_required: false });
 }
 
 async function loadData() {
@@ -412,5 +414,6 @@ $("export-csv").addEventListener("click", exportCsv);
 
 if (!configured()) show("setup-panel");
 else if (readInviteSession()) {
-} else if (getSession()?.access_token) loadData();
+} else if (getSession()?.password_setup_required) show("password-panel");
+else if (getSession()?.access_token) loadData();
 else show("login-panel");
