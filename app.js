@@ -185,6 +185,22 @@ const sourceChannelLabels = {
 };
 Object.entries(sourceChannelLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
 
+const friendlyHandoverLabels = {
+  th: { staffNext:"เหลืออีก 1 ขั้นตอน", handoverTitle:"อีกนิดเดียวก็เสร็จแล้ว!", handoverBody:"ลงทะเบียนเรียบร้อยแล้ว กรุณาส่งอุปกรณ์คืนให้เจ้าหน้าที่เพื่อรับบัตรเข้าชมงาน", staffContinue:"เจ้าหน้าที่: ดำเนินการออกตั๋ว" },
+  en: { staffNext:"ONE LAST STEP", handoverTitle:"Almost there!", handoverBody:"Your registration is complete. Please return this device to our staff to receive your admission ticket(s).", staffContinue:"Staff: Continue to ticketing" },
+  zh: { staffNext:"只剩最后一步", handoverTitle:"快完成了！", handoverBody:"您的登记已完成。请将设备交还工作人员，以领取入场票。", staffContinue:"工作人员：继续出票" },
+  ja: { staffNext:"あと1ステップ", handoverTitle:"あと少しで完了です！", handoverBody:"登録が完了しました。入場チケットを受け取るため、この端末をスタッフへお戻しください。", staffContinue:"スタッフ：発券へ進む" },
+  ko: { staffNext:"마지막 한 단계", handoverTitle:"거의 다 됐어요!", handoverBody:"등록이 완료되었습니다. 입장권을 받으려면 이 기기를 직원에게 돌려주세요.", staffContinue:"직원: 티켓 발급 계속" },
+  fr: { staffNext:"UNE DERNIÈRE ÉTAPE", handoverTitle:"C’est presque terminé !", handoverBody:"Votre inscription est terminée. Veuillez rendre cet appareil au personnel pour recevoir vos billets d’entrée.", staffContinue:"Personnel : passer à la billetterie" },
+  es: { staffNext:"SOLO FALTA UN PASO", handoverTitle:"¡Ya casi está!", handoverBody:"Su registro está completo. Devuelva este dispositivo al personal para recibir sus entradas.", staffContinue:"Personal: continuar con las entradas" },
+  de: { staffNext:"NUR NOCH EIN SCHRITT", handoverTitle:"Fast geschafft!", handoverBody:"Ihre Registrierung ist abgeschlossen. Bitte geben Sie dieses Gerät dem Personal zurück, um Ihre Eintrittskarte(n) zu erhalten.", staffContinue:"Personal: Ticketausgabe fortsetzen" },
+  ru: { staffNext:"ОСТАЛСЯ ОДИН ШАГ", handoverTitle:"Почти готово!", handoverBody:"Регистрация завершена. Пожалуйста, верните устройство сотруднику, чтобы получить входные билеты.", staffContinue:"Персонал: перейти к выдаче билетов" },
+  pt: { staffNext:"FALTA SÓ UM PASSO", handoverTitle:"Quase lá!", handoverBody:"Seu cadastro foi concluído. Devolva este dispositivo à equipe para receber seus ingressos.", staffContinue:"Equipe: continuar para os ingressos" },
+  ar: { staffNext:"بقيت خطوة واحدة", handoverTitle:"أوشكت على الانتهاء!", handoverBody:"اكتمل تسجيلك. يرجى إعادة هذا الجهاز إلى الموظف لاستلام تذاكر الدخول.", staffContinue:"الموظف: المتابعة لإصدار التذاكر" },
+  it: { staffNext:"MANCA SOLO UN PASSAGGIO", handoverTitle:"Ci siamo quasi!", handoverBody:"La registrazione è completata. Restituisci questo dispositivo al personale per ricevere i biglietti d’ingresso.", staffContinue:"Staff: continua con i biglietti" }
+};
+Object.entries(friendlyHandoverLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
+
 const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
 const state = { attendees: [], ticketQuantities: {} };
 const screens = ["screen-welcome","screen-visitor","screen-handover","screen-staff","screen-complete"];

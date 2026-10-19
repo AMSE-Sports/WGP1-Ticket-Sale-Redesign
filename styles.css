@@ -413,4 +413,6 @@ html[dir="rtl"] .hero-copy{text-align:right}
   .flow-active .form-wide-actions .registration-action strong{font-size:13px;line-height:1.15}
   .flow-active .form-wide-actions .registration-action small{margin-top:1px;font-size:10px;line-height:1.15}
   .flow-active footer{flex:0 0 auto;padding:5px 22px;font-size:11px}
+  .flow-active #screen-handover:not(.hidden){display:grid;flex:1;width:100%;min-height:0;place-items:center}
+  .flow-active #screen-handover .handover{width:min(900px,100%);margin:0 auto}
 }
