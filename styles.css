@@ -531,3 +531,26 @@ body{overflow-wrap:anywhere}
   .complete-card{padding:24px;margin:0 auto}
   .complete-card h2{font-size:42px}
 }
+
+/* Short landscape tablets: keep the five rows visible without shrinking type. */
+@media(min-width:760px) and (max-height:850px){
+  .flow-active #screen-visitor .page-head{align-items:center;justify-content:space-between;max-width:none;width:100%;min-height:44px}
+  .flow-active #screen-visitor .page-head>div:first-child{display:flex;align-items:center;gap:10px}
+  .flow-active #screen-visitor .page-head h2{font-size:27px}
+  .flow-active .attendee-counter{display:flex;align-items:center;gap:8px;min-width:0}
+  .flow-active .five-step-layout .identity-section,
+  .flow-active .five-step-layout .demographics-section,
+  .flow-active .five-step-layout .attendance-section{display:grid;grid-template-columns:215px minmax(0,1fr);align-items:center;gap:10px}
+  .flow-active .five-step-layout .identity-section .section-title,
+  .flow-active .five-step-layout .demographics-section .section-title,
+  .flow-active .five-step-layout .attendance-section .section-title{border:0;margin:0;padding:0}
+  .flow-active .five-step-layout .demographics-section input[type=hidden]{display:none}
+  .flow-active .five-step-layout .source-section .section-title>div{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .flow-active .five-step-layout .privacy-details summary{display:none}
+  .flow-active .five-step-layout .privacy-details:not([open]) summary{display:block}
+  .flow-active .five-step-layout .privacy-details[open] .privacy-box{border-top:0}
+  .flow-active .form-wide-actions .registration-action small{font-size:15px}
+  .welcome-mode .welcome-card h2{font-size:42px}
+  .welcome-mode .welcome-card{padding:10px 20px}
+  .welcome-mode .language-card{min-height:108px}
+}
