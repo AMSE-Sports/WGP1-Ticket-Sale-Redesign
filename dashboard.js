@@ -9,6 +9,21 @@ const money = (value) =>
   `${Number(value || 0).toLocaleString("en-US", { maximumFractionDigits: 0 })} THB`;
 const number = (value) => Number(value || 0).toLocaleString("en-US");
 const escapeCsv = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+const bangkokPartsFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Bangkok",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+const heatmapDateFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Bangkok",
+  weekday: "short",
+  day: "2-digit",
+  month: "short",
+});
 
 function configured() {
   return Boolean(config.enabled && config.url && config.anonKey);
@@ -232,6 +247,130 @@ function renderBars(id, values, formatter = number, limit = 8) {
   });
 }
 
+function bangkokDateParts(value) {
+  const parts = Object.fromEntries(
+    bangkokPartsFormatter
+      .formatToParts(new Date(value))
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
+  );
+  return {
+    dateKey: `${parts.year}-${parts.month}-${parts.day}`,
+    minuteOfDay: Number(parts.hour) * 60 + Number(parts.minute),
+  };
+}
+
+function minuteLabel(startMinute, bucketSize) {
+  const format = (minute) =>
+    `${String(Math.floor(minute / 60) % 24).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
+  return `${format(startMinute)}–${format(startMinute + bucketSize)}`;
+}
+
+function renderTimeHeatmap(sales) {
+  const root = $("time-heatmap");
+  root.textContent = "";
+  if (!sales.length) {
+    root.innerHTML = '<div class="chart-empty">No data for this filter</div>';
+    $("peak-period").textContent = "—";
+    $("busiest-day").textContent = "—";
+    $("average-frequency").textContent = "—";
+    return;
+  }
+
+  const bucketSize = Number($("time-bucket").value || 60);
+  const buckets = new Map();
+  const dayTotals = new Map();
+  const observedMinutes = [];
+  sales.forEach((sale) => {
+    const { dateKey, minuteOfDay } = bangkokDateParts(sale.submitted_at);
+    const bucketStart = Math.floor(minuteOfDay / bucketSize) * bucketSize;
+    const key = `${dateKey}|${bucketStart}`;
+    const current = buckets.get(key) || { tickets: 0, transactions: 0 };
+    current.tickets += Number(sale.ticket_quantity || 0);
+    current.transactions += 1;
+    buckets.set(key, current);
+    const day = dayTotals.get(dateKey) || { tickets: 0, transactions: 0 };
+    day.tickets += Number(sale.ticket_quantity || 0);
+    day.transactions += 1;
+    dayTotals.set(dateKey, day);
+    observedMinutes.push(bucketStart);
+  });
+
+  const dates = [...dayTotals.keys()].sort();
+  const firstMinute = Math.min(8 * 60, ...observedMinutes);
+  const finalMinute = Math.max(18 * 60, ...observedMinutes.map((v) => v + bucketSize));
+  const timeRows = [];
+  for (let minute = firstMinute; minute < finalMinute; minute += bucketSize)
+    timeRows.push(minute);
+  const maxTickets = Math.max(
+    1,
+    ...[...buckets.values()].map((bucket) => bucket.tickets),
+  );
+  const grid = document.createElement("div");
+  grid.className = "time-heatmap";
+  grid.style.setProperty("--day-count", dates.length);
+  grid.style.minWidth = `${88 + dates.length * 112}px`;
+  const corner = document.createElement("div");
+  corner.className = "heatmap-corner";
+  grid.appendChild(corner);
+  dates.forEach((dateKey) => {
+    const day = document.createElement("div");
+    day.className = "heatmap-day";
+    day.textContent = heatmapDateFormatter.format(
+      new Date(`${dateKey}T00:00:00+07:00`),
+    );
+    grid.appendChild(day);
+  });
+  timeRows.forEach((minute) => {
+    const time = document.createElement("div");
+    time.className = "heatmap-time";
+    time.textContent = minuteLabel(minute, bucketSize);
+    grid.appendChild(time);
+    dates.forEach((dateKey) => {
+      const value = buckets.get(`${dateKey}|${minute}`) || {
+        tickets: 0,
+        transactions: 0,
+      };
+      const level = value.tickets
+        ? Math.max(1, Math.ceil((value.tickets / maxTickets) * 4))
+        : 0;
+      const cell = document.createElement("div");
+      cell.className = `heatmap-cell level-${level}`;
+      cell.setAttribute(
+        "aria-label",
+        `${dateKey}, ${minuteLabel(minute, bucketSize)}: ${value.tickets} tickets from ${value.transactions} transactions`,
+      );
+      cell.title = `${value.tickets} tickets · ${value.transactions} transactions`;
+      const tickets = document.createElement("strong");
+      tickets.textContent = number(value.tickets);
+      const frequency = document.createElement("small");
+      frequency.textContent = `${number(value.transactions)} sale${value.transactions === 1 ? "" : "s"}`;
+      cell.append(tickets, frequency);
+      grid.appendChild(cell);
+    });
+  });
+  root.appendChild(grid);
+
+  const peak = [...buckets.entries()].sort(
+    (a, b) =>
+      b[1].tickets - a[1].tickets ||
+      b[1].transactions - a[1].transactions,
+  )[0];
+  const [peakDate, peakMinute] = peak[0].split("|");
+  $("peak-period").textContent = `${heatmapDateFormatter.format(new Date(`${peakDate}T00:00:00+07:00`))}, ${minuteLabel(Number(peakMinute), bucketSize)} · ${number(peak[1].tickets)} tickets`;
+  const busiest = [...dayTotals.entries()].sort(
+    (a, b) => b[1].tickets - a[1].tickets,
+  )[0];
+  $("busiest-day").textContent = `${heatmapDateFormatter.format(new Date(`${busiest[0]}T00:00:00+07:00`))} · ${number(busiest[1].tickets)} tickets`;
+  const activeBuckets = [...buckets.values()].filter(
+    (bucket) => bucket.transactions > 0,
+  );
+  const averageTransactions =
+    activeBuckets.reduce((sum, bucket) => sum + bucket.transactions, 0) /
+    activeBuckets.length;
+  $("average-frequency").textContent = `${averageTransactions.toFixed(1)} transactions / active period`;
+}
+
 function renderDashboard() {
   const sales = state.filteredSales;
   const saleIds = new Set(sales.map((sale) => sale.id));
@@ -308,6 +447,7 @@ function renderDashboard() {
       (ticket) => ticket.quantity,
     ),
   );
+  renderTimeHeatmap(sales);
   renderTable(sales);
   $("result-count").textContent = `${number(sales.length)} records`;
 }
@@ -415,6 +555,9 @@ $("sign-out").addEventListener("click", () => {
 });
 $("refresh-data").addEventListener("click", loadData);
 $("export-csv").addEventListener("click", exportCsv);
+$("time-bucket").addEventListener("change", () =>
+  renderTimeHeatmap(state.filteredSales),
+);
 ["filter-from", "filter-to", "filter-staff", "filter-payment"].forEach((id) =>
   $(id).addEventListener("change", applyFilters),
 );
