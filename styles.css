@@ -516,3 +516,8 @@ body{overflow-wrap:anywhere}
   .handover{padding:36px 18px}
   .attendee-counter{min-width:0}
 }
+
+/* Keep the enlarged welcome heading fully inside its banner. */
+@media(min-width:760px){
+  .welcome-mode .hero,.welcome-mode .hero img{height:220px;min-height:220px}
+}
