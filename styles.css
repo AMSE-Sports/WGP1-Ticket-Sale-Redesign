@@ -579,3 +579,11 @@ button,input,select,textarea{font-family:inherit}
 .language-card[data-language="zh"] strong{font-family:"Noto Sans SC",sans-serif}
 .language-card[data-language="ar"] strong{font-family:"Tajawal",sans-serif}
 .language-flag{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+
+/* Lighter Thai type: retain the rounded family and all existing sizes. */
+html:lang(th) :is(#screen-welcome,#screen-visitor,#screen-handover){font-weight:400}
+html:lang(th) :is(#screen-welcome,#screen-visitor,#screen-handover) :is(label,.field-title,.option-tile span,.check-line span,input,select,textarea,.eyebrow,.handover-lock,.attendee-counter span,.registration-action small){font-weight:400}
+html:lang(th) :is(#screen-welcome,#screen-visitor,#screen-handover) :is(h2,h3,strong,.btn,.section-number,.privacy-details summary){font-weight:500}
+html:lang(th) .language-switcher label,html:lang(th) .language-switcher select,html:lang(th) .dev-notice{font-weight:400}
+html:lang(th) .dev-notice strong{font-weight:500}
+.language-card[data-language="th"] strong{font-weight:500}
