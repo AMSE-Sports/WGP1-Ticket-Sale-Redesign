@@ -55,6 +55,14 @@ create policy "staff read ticket items" on public.ticket_items for select to aut
 drop policy if exists "staff read own profile" on public.staff_profiles;
 create policy "staff read own profile" on public.staff_profiles for select to authenticated using (user_id = auth.uid());
 
+-- Table privileges are required before PostgreSQL evaluates the RLS policies above.
+-- Anonymous visitors still cannot read these tables; only authenticated active staff
+-- pass both the table grant and the row-level policy.
+grant select on table public.ticket_sales to authenticated;
+grant select on table public.attendees to authenticated;
+grant select on table public.ticket_items to authenticated;
+grant select on table public.staff_profiles to authenticated;
+
 create or replace function public.create_ticket_transaction(payload jsonb) returns uuid
 language plpgsql security definer set search_path = public as $$
 declare new_sale_id uuid; attendee jsonb; item jsonb; payload_attendee_count integer; payload_ticket_quantity integer;
