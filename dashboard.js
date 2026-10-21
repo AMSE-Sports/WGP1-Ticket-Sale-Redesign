@@ -2,6 +2,7 @@
 
 const config = window.WGP1_SUPABASE_CONFIG || {};
 const sessionKey = "wgp1-dashboard-session";
+const loginAliases = Object.freeze({ admin: "admin@wgp1.local" });
 const state = { sales: [], attendees: [], tickets: [], filteredSales: [] };
 const $ = (id) => document.getElementById(id);
 const money = (value) =>
@@ -62,6 +63,10 @@ async function login(email, password) {
   );
   setSession(session);
   return session;
+}
+
+function resolveLoginEmail(username) {
+  return loginAliases[String(username || "").trim().toLowerCase()] || null;
 }
 
 function readInviteSession() {
@@ -367,11 +372,13 @@ $("login-form").addEventListener("submit", async (event) => {
   const button = event.currentTarget.querySelector("button");
   button.disabled = true;
   try {
-    await login($("login-email").value.trim(), $("login-password").value);
+    const email = resolveLoginEmail($("login-username").value);
+    if (!email) throw new Error("Invalid username or password.");
+    await login(email, $("login-password").value);
     $("login-password").value = "";
     await loadData();
   } catch (error) {
-    $("login-error").textContent = error.message || "Sign in failed";
+    $("login-error").textContent = "Invalid username or password.";
     $("login-error").classList.remove("hidden");
   } finally {
     button.disabled = false;
