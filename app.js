@@ -186,7 +186,7 @@ const sourceChannelLabels = {
 Object.entries(sourceChannelLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
 
 const friendlyHandoverLabels = {
-  th: { staffNext:"เหลืออีก 1 ขั้นตอน", handoverTitle:"อีกนิดเดียวก็เสร็จแล้ว!", handoverBody:"ลงทะเบียนเรียบร้อยแล้ว กรุณาส่งอุปกรณ์คืนให้เจ้าหน้าที่เพื่อรับบัตรเข้าชมงาน", staffContinue:"เจ้าหน้าที่: ดำเนินการออกตั๋ว" },
+  th: { staffNext:"เหลืออีก 1 ขั้นตอน", handoverTitle:"อีกนิดเดียวก็เสร็จแล้ว!", handoverBody:"ลงทะเบียนเรียบร้อยแล้ว\nกรุณาส่งอุปกรณ์คืนให้เจ้าหน้าที่เพื่อรับบัตรเข้าชมงาน", staffContinue:"เจ้าหน้าที่: ดำเนินการออกตั๋ว" },
   en: { staffNext:"ONE LAST STEP", handoverTitle:"Almost there!", handoverBody:"Your registration is complete. Please return this device to our staff to receive your admission ticket(s).", staffContinue:"Staff: Continue to ticketing" },
   zh: { staffNext:"只剩最后一步", handoverTitle:"快完成了！", handoverBody:"您的登记已完成。请将设备交还工作人员，以领取入场票。", staffContinue:"工作人员：继续出票" },
   ja: { staffNext:"あと1ステップ", handoverTitle:"あと少しで完了です！", handoverBody:"登録が完了しました。入場チケットを受け取るため、この端末をスタッフへお戻しください。", staffContinue:"スタッフ：発券へ進む" },
