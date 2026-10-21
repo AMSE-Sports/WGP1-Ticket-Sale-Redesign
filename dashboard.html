@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f37021" />
     <title>WGP#1 Ticket Intelligence</title>
-    <link rel="stylesheet" href="dashboard.css?v=20261019-1" />
+    <link rel="stylesheet" href="dashboard.css?v=20261021-2" />
   </head>
   <body>
     <header class="dash-header">
@@ -164,6 +164,41 @@
             </div>
             <div id="chart-daily" class="bar-chart horizontal"></div>
           </article>
+          <article class="panel wide time-analysis-panel">
+            <div class="panel-head time-panel-head">
+              <div>
+                <p class="kicker">SALES FREQUENCY</p>
+                <h3>Ticket sales by day and time</h3>
+                <p class="panel-description">
+                  Each cell shows tickets sold and number of transactions.
+                </p>
+              </div>
+              <label class="compact-control"
+                >Time interval<select id="time-bucket">
+                  <option value="60">60 minutes</option>
+                  <option value="30">30 minutes</option>
+                </select></label
+              >
+            </div>
+            <div class="heatmap-summary">
+              <div>
+                <span>Peak period</span><strong id="peak-period">—</strong>
+              </div>
+              <div>
+                <span>Busiest day</span><strong id="busiest-day">—</strong>
+              </div>
+              <div>
+                <span>Average frequency</span
+                ><strong id="average-frequency">—</strong>
+              </div>
+            </div>
+            <div id="time-heatmap" class="time-heatmap-wrap"></div>
+            <div class="heatmap-legend" aria-hidden="true">
+              <span>Lower</span><i class="level-0"></i><i class="level-1"></i
+              ><i class="level-2"></i><i class="level-3"></i
+              ><i class="level-4"></i><span>Higher ticket volume</span>
+            </div>
+          </article>
           <article class="panel">
             <div class="panel-head">
               <div>
@@ -230,6 +265,6 @@
       </section>
     </main>
     <script src="supabase-config.js?v=20261019-2"></script>
-    <script src="dashboard.js?v=20261021-1"></script>
+    <script src="dashboard.js?v=20261021-2"></script>
   </body>
 </html>
