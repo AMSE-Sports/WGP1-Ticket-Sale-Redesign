@@ -624,3 +624,10 @@ html:lang(th) .dev-notice strong{font-weight:500}
 }
 @media(max-width:759px){.visitor-guide{width:100%;max-width:none;justify-content:space-between}.visitor-guide-next{max-width:140px}}
 @media(prefers-reduced-motion:reduce){.guided-field input,.guided-field select{transition:none!important}}
+
+/* Return-device screen: one clear instruction, centered and prominent. */
+#screen-handover .handover{min-height:400px;padding:32px clamp(20px,4vw,48px);gap:20px}
+#screen-handover .handover-confirmation{margin:0;font-size:20px;line-height:1.4;opacity:.9}
+#screen-handover .handover-instruction{max-width:100%;margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.4;text-wrap:balance}
+#screen-handover .handover .btn{margin-top:12px}
+@media(max-width:759px){#screen-handover .handover{min-height:340px;gap:18px}#screen-handover .handover-confirmation{font-size:18px}}
