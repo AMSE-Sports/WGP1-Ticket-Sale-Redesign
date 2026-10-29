@@ -251,6 +251,7 @@ function selectCountry(country) {
   input.setCustomValidity("");
   input.removeAttribute("aria-invalid");
   closeCountrySuggestions();
+  window.WGP1_VISITOR_GUIDE?.refresh();
 }
 
 function countrySearchText(value) {
@@ -313,6 +314,7 @@ function applyLanguage(language) {
   applyTranslations(document, currentLanguage);
   applyStaffEnglish();
   populateCountries(); renderTickets(); updateCounts();
+  window.WGP1_VISITOR_GUIDE?.refresh();
 }
 
 function showScreen(id) {
@@ -320,6 +322,7 @@ function showScreen(id) {
   document.body.classList.toggle("welcome-mode", id === "screen-welcome");
   document.body.classList.toggle("flow-active", id !== "screen-welcome");
   window.scrollTo({ top: 0, behavior: "smooth" });
+  window.WGP1_VISITOR_GUIDE?.refresh();
 }
 function setError(id, message) { const box = $(id); box.textContent = message; box.classList.toggle("hidden", !message); }
 function updateCounts() {
@@ -437,6 +440,7 @@ function resetVisitorForm(hideSavedNotice = true) {
   setError("visitor-error", "");
   $("visitor-form").querySelectorAll("[aria-invalid]").forEach(element => element.removeAttribute("aria-invalid"));
   if (hideSavedNotice) $("visitor-saved-notice").classList.add("hidden");
+  window.WGP1_VISITOR_GUIDE?.refresh();
 }
 
 function renderTickets() {
@@ -602,3 +606,4 @@ $("next-customer").addEventListener("click", resetAll);
 
 applyLanguage(currentLanguage);
 resetAll();
+
