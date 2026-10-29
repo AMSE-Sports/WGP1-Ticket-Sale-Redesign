@@ -3,7 +3,20 @@
 const config = window.WGP1_SUPABASE_CONFIG || {};
 const sessionKey = "wgp1-dashboard-session";
 const loginAliases = Object.freeze({ admin: "admin@wgp1.local" });
-const state = { sales: [], attendees: [], tickets: [], filteredSales: [] };
+const eventDays = Object.freeze([
+  { key: "2027-01-13", day: "DAY 1", label: "13 JAN" },
+  { key: "2027-01-14", day: "DAY 2", label: "14 JAN" },
+  { key: "2027-01-15", day: "DAY 3", label: "15 JAN" },
+  { key: "2027-01-16", day: "DAY 4", label: "16 JAN" },
+  { key: "2027-01-17", day: "DAY 5", label: "17 JAN" },
+]);
+const state = {
+  sales: [],
+  attendees: [],
+  tickets: [],
+  filteredSales: [],
+  tableExpanded: false,
+};
 const $ = (id) => document.getElementById(id);
 const money = (value) =>
   `${Number(value || 0).toLocaleString("en-US", { maximumFractionDigits: 0 })} THB`;
@@ -182,10 +195,10 @@ function populateStaff() {
 
 function applyFilters() {
   const from = $("filter-from").value
-    ? new Date(`${$("filter-from").value}T00:00:00`)
+    ? new Date(`${$("filter-from").value}T00:00:00+07:00`)
     : null;
   const to = $("filter-to").value
-    ? new Date(`${$("filter-to").value}T23:59:59.999`)
+    ? new Date(`${$("filter-to").value}T23:59:59.999+07:00`)
     : null;
   const staff = $("filter-staff").value;
   const payment = $("filter-payment").value;
@@ -198,7 +211,74 @@ function applyFilters() {
       (!payment || sale.payment_method === payment)
     );
   });
+  state.tableExpanded = false;
   renderDashboard();
+}
+
+function nonDateFilteredSales() {
+  const staff = $("filter-staff").value;
+  const payment = $("filter-payment").value;
+  return state.sales.filter(
+    (sale) =>
+      (!staff || sale.staff_name === staff) &&
+      (!payment || sale.payment_method === payment),
+  );
+}
+
+function eventDayKey(value) {
+  return bangkokDateParts(value).dateKey;
+}
+
+function quickMenuSelection() {
+  const from = $("filter-from").value;
+  const to = $("filter-to").value;
+  if (!from && !to) return "total";
+  return from === to && eventDays.some((day) => day.key === from) ? from : "";
+}
+
+function renderEventDayMenu() {
+  const root = $("event-day-menu");
+  const sales = nonDateFilteredSales();
+  const selected = quickMenuSelection();
+  const items = [
+    { key: "total", day: "ALL EVENT", label: "TOTAL", sales },
+    ...eventDays.map((day) => ({
+      ...day,
+      sales: sales.filter((sale) => eventDayKey(sale.submitted_at) === day.key),
+    })),
+  ];
+  root.textContent = "";
+  items.forEach((item) => {
+    const revenue = item.sales.reduce(
+      (sum, sale) => sum + Number(sale.amount_paid || 0),
+      0,
+    );
+    const tickets = item.sales.reduce(
+      (sum, sale) => sum + Number(sale.ticket_quantity || 0),
+      0,
+    );
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `event-day-card${selected === item.key ? " active" : ""}`;
+    button.setAttribute("aria-pressed", selected === item.key ? "true" : "false");
+    button.innerHTML = `
+      <span>${item.day}</span>
+      <strong>${item.label}</strong>
+      <b>${money(revenue)}</b>
+      <small>${number(tickets)} tickets · ${number(item.sales.length)} sales</small>
+    `;
+    button.addEventListener("click", () => {
+      if (item.key === "total") {
+        $("filter-from").value = "";
+        $("filter-to").value = "";
+      } else {
+        $("filter-from").value = item.key;
+        $("filter-to").value = item.key;
+      }
+      applyFilters();
+    });
+    root.appendChild(button);
+  });
 }
 
 function countBy(items, valueFn, amountFn = () => 1) {
@@ -309,7 +389,7 @@ function renderTimeHeatmap(sales) {
   const grid = document.createElement("div");
   grid.className = "time-heatmap";
   grid.style.setProperty("--day-count", dates.length);
-  grid.style.minWidth = `${88 + dates.length * 112}px`;
+  grid.style.minWidth = `${150 + dates.length * 168}px`;
   const corner = document.createElement("div");
   corner.className = "heatmap-corner";
   grid.appendChild(corner);
@@ -399,6 +479,8 @@ function renderDashboard() {
   $("kpi-returning").textContent =
     `${attendees.length ? Math.round((returning / attendees.length) * 100) : 0}%`;
 
+  renderEventDayMenu();
+
   renderBars(
     "chart-daily",
     countBy(
@@ -419,6 +501,8 @@ function renderDashboard() {
       attendees,
       (person) => person.country_name || person.country_code || "Unknown",
     ),
+    number,
+    Number.POSITIVE_INFINITY,
   );
   renderBars(
     "chart-age",
@@ -455,7 +539,8 @@ function renderDashboard() {
 function renderTable(sales) {
   const body = $("sales-table");
   body.textContent = "";
-  sales.slice(0, 100).forEach((sale) => {
+  const visibleSales = state.tableExpanded ? sales : sales.slice(0, 10);
+  visibleSales.forEach((sale) => {
     const row = document.createElement("tr");
     const values = [
       new Date(sale.submitted_at).toLocaleString("en-GB"),
@@ -477,6 +562,11 @@ function renderTable(sales) {
   if (!sales.length)
     body.innerHTML =
       '<tr><td colspan="7" class="muted">No transactions found</td></tr>';
+  const toggle = $("toggle-sales-table");
+  toggle.classList.toggle("hidden", sales.length <= 10);
+  toggle.textContent = state.tableExpanded
+    ? "Show latest 10"
+    : `Show all ${number(sales.length)}`;
 }
 
 function exportCsv() {
@@ -558,6 +648,10 @@ $("export-csv").addEventListener("click", exportCsv);
 $("time-bucket").addEventListener("change", () =>
   renderTimeHeatmap(state.filteredSales),
 );
+$("toggle-sales-table").addEventListener("click", () => {
+  state.tableExpanded = !state.tableExpanded;
+  renderTable(state.filteredSales);
+});
 ["filter-from", "filter-to", "filter-staff", "filter-payment"].forEach((id) =>
   $(id).addEventListener("change", applyFilters),
 );
