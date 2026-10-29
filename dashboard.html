@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f37021" />
     <title>WGP#1 Ticket Intelligence</title>
-    <link rel="stylesheet" href="dashboard.css?v=20261021-2" />
+    <link rel="stylesheet" href="dashboard.css?v=20261029-1" />
   </head>
   <body>
     <header class="dash-header">
@@ -96,6 +96,12 @@
       </section>
 
       <section id="dashboard" class="hidden">
+        <nav
+          id="event-day-menu"
+          class="event-day-menu"
+          aria-label="Event day quick filters"
+        ></nav>
+
         <div class="toolbar">
           <div>
             <p class="kicker">LIVE TEST DATA</p>
@@ -199,42 +205,44 @@
               ><i class="level-4"></i><span>Higher ticket volume</span>
             </div>
           </article>
-          <article class="panel">
+          <article class="panel country-panel">
             <div class="panel-head">
               <div>
                 <p class="kicker">AUDIENCE</p>
-                <h3>Top nationalities</h3>
+                <h3>All nationalities</h3>
               </div>
             </div>
-            <div id="chart-country" class="bar-chart"></div>
+            <div id="chart-country" class="bar-chart country-chart"></div>
           </article>
-          <article class="panel">
-            <div class="panel-head">
-              <div>
-                <p class="kicker">PROFILE</p>
-                <h3>Age groups</h3>
+          <div class="audience-side-stack">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="kicker">PROFILE</p>
+                  <h3>Age groups</h3>
+                </div>
               </div>
-            </div>
-            <div id="chart-age" class="bar-chart"></div>
-          </article>
-          <article class="panel">
-            <div class="panel-head">
-              <div>
-                <p class="kicker">MARKETING</p>
-                <h3>Discovery channels</h3>
+              <div id="chart-age" class="bar-chart"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="kicker">MARKETING</p>
+                  <h3>Discovery channels</h3>
+                </div>
               </div>
-            </div>
-            <div id="chart-source" class="bar-chart"></div>
-          </article>
-          <article class="panel">
-            <div class="panel-head">
-              <div>
-                <p class="kicker">PRODUCT</p>
-                <h3>Ticket mix</h3>
+              <div id="chart-source" class="bar-chart"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="kicker">PRODUCT</p>
+                  <h3>Ticket mix</h3>
+                </div>
               </div>
-            </div>
-            <div id="chart-ticket" class="bar-chart"></div>
-          </article>
+              <div id="chart-ticket" class="bar-chart"></div>
+            </article>
+          </div>
         </div>
 
         <article class="panel table-panel">
@@ -243,7 +251,16 @@
               <p class="kicker">TRANSACTIONS</p>
               <h3>Recent ticket sales</h3>
             </div>
-            <span id="result-count">0 records</span>
+            <div class="table-actions">
+              <span id="result-count">0 records</span>
+              <button
+                id="toggle-sales-table"
+                class="table-toggle hidden"
+                type="button"
+              >
+                Show all
+              </button>
+            </div>
           </div>
           <div class="table-wrap">
             <table>
@@ -265,6 +282,6 @@
       </section>
     </main>
     <script src="supabase-config.js?v=20261019-2"></script>
-    <script src="dashboard.js?v=20261021-2"></script>
+    <script src="dashboard.js?v=20261029-1"></script>
   </body>
 </html>
