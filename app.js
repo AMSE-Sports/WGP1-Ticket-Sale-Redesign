@@ -170,18 +170,18 @@ const fiveStepLabels = {
 Object.entries(fiveStepLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
 
 const sourceChannelLabels = {
-  th: { onlineSocial:"Online Social", newspaperTelevision:"หนังสือพิมพ์หรือโทรทัศน์" },
-  en: { onlineSocial:"Online Social", newspaperTelevision:"Newspaper or television" },
-  zh: { onlineSocial:"网络与社交媒体", newspaperTelevision:"报纸或电视" },
-  ja: { onlineSocial:"オンライン・SNS", newspaperTelevision:"新聞またはテレビ" },
-  ko: { onlineSocial:"온라인 및 소셜 미디어", newspaperTelevision:"신문 또는 텔레비전" },
-  fr: { onlineSocial:"Réseaux sociaux en ligne", newspaperTelevision:"Journal ou télévision" },
-  es: { onlineSocial:"Redes sociales en línea", newspaperTelevision:"Periódico o televisión" },
-  de: { onlineSocial:"Online und soziale Medien", newspaperTelevision:"Zeitung oder Fernsehen" },
-  ru: { onlineSocial:"Интернет и социальные сети", newspaperTelevision:"Газета или телевидение" },
-  pt: { onlineSocial:"Online e redes sociais", newspaperTelevision:"Jornal ou televisão" },
-  ar: { onlineSocial:"الإنترنت ووسائل التواصل الاجتماعي", newspaperTelevision:"الصحف أو التلفزيون" },
-  it: { onlineSocial:"Online e social media", newspaperTelevision:"Giornale o televisione" }
+  th: { onlineSocial:"Social Media", newspaperTelevision:"หนังสือพิมพ์หรือโทรทัศน์" },
+  en: { onlineSocial:"Social Media", newspaperTelevision:"Newspaper or television" },
+  zh: { onlineSocial:"社交媒体", newspaperTelevision:"报纸或电视" },
+  ja: { onlineSocial:"ソーシャルメディア", newspaperTelevision:"新聞またはテレビ" },
+  ko: { onlineSocial:"소셜 미디어", newspaperTelevision:"신문 또는 텔레비전" },
+  fr: { onlineSocial:"Réseaux sociaux", newspaperTelevision:"Journal ou télévision" },
+  es: { onlineSocial:"Redes sociales", newspaperTelevision:"Periódico o televisión" },
+  de: { onlineSocial:"Soziale Medien", newspaperTelevision:"Zeitung oder Fernsehen" },
+  ru: { onlineSocial:"Социальные сети", newspaperTelevision:"Газета или телевидение" },
+  pt: { onlineSocial:"Redes sociais", newspaperTelevision:"Jornal ou televisão" },
+  ar: { onlineSocial:"وسائل التواصل الاجتماعي", newspaperTelevision:"الصحف أو التلفزيون" },
+  it: { onlineSocial:"Social media", newspaperTelevision:"Giornale o televisione" }
 };
 Object.entries(sourceChannelLabels).forEach(([language, labels]) => Object.assign(translations[language], labels));
 
