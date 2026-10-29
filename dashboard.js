@@ -2,7 +2,10 @@
 
 const config = window.WGP1_SUPABASE_CONFIG || {};
 const sessionKey = "wgp1-dashboard-session";
-const loginAliases = Object.freeze({ admin: "admin@wgp1.local" });
+const loginAliases = Object.freeze({
+  admin: "admin@wgp1.local",
+  "admin@wgp1.local": "admin@wgp1.local",
+});
 const eventDays = Object.freeze([
   { key: "2027-01-13", day: "DAY 1", label: "13 JAN" },
   { key: "2027-01-14", day: "DAY 2", label: "14 JAN" },
