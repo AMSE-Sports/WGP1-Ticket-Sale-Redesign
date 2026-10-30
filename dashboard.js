@@ -1,6 +1,14 @@
 "use strict";
 
-const config = window.WGP1_SUPABASE_CONFIG || {};
+// Keep a dashboard-local fallback because some mobile content blockers prevent
+// the separate `supabase-config.js` file from loading. The publishable key is
+// intentionally public; database access remains protected by Supabase RLS.
+const config = window.WGP1_SUPABASE_CONFIG || Object.freeze({
+  enabled: true,
+  url: "https://nianjgspxofnlqbdmzyo.supabase.co",
+  anonKey: "sb_publishable_4HqdTIdWgUOHdG-OGinFYA_1MBJ3hBh",
+  mode: "test",
+});
 const sessionKey = "wgp1-dashboard-session";
 const loginAliases = Object.freeze({
   admin: "admin@wgp1.local",
