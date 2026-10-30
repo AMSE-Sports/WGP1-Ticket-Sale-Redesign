@@ -10,6 +10,10 @@ const config = window.WGP1_SUPABASE_CONFIG || Object.freeze({
   mode: "test",
 });
 const sessionKey = "wgp1-dashboard-session";
+const sampleDataMode = "sample-dashboard-500";
+const dashboardView = new URLSearchParams(window.location.search).get("view") === "sample"
+  ? "sample"
+  : "production";
 const loginAliases = Object.freeze({
   admin: "admin@wgp1.local",
   "admin@wgp1.local": "admin@wgp1.local",
@@ -69,6 +73,27 @@ function show(id) {
   ["setup-panel", "login-panel", "password-panel", "dashboard"].forEach(
     (name) => $(name).classList.toggle("hidden", name !== id),
   );
+}
+
+function configureDashboardView() {
+  const isSample = dashboardView === "sample";
+  document.title = isSample
+    ? "WGP#1 Sample Ticket Intelligence"
+    : "WGP#1 Ticket Intelligence";
+  $("dashboard-subtitle").textContent = isSample
+    ? "Isolated 500-visitor test dataset · 13–17 Jan 2027"
+    : "Visitor and onsite sales analytics · sample data excluded";
+  $("dashboard-data-label").textContent = isSample
+    ? "SAMPLE DATA · ISOLATED VIEW"
+    : "LIVE DATA · SAMPLE EXCLUDED";
+  $("dashboard-view-title").textContent = isSample
+    ? "Sample sales overview"
+    : "Sales overview";
+  const modeLink = $("dashboard-mode-link");
+  modeLink.href = isSample ? "dashboard.html" : "dashboard.html?view=sample";
+  modeLink.textContent = isSample
+    ? "Open production dashboard"
+    : "Open sample dashboard";
 }
 
 async function api(path, token, options = {}) {
@@ -161,7 +186,11 @@ async function loadData() {
       ),
       api("/rest/v1/ticket_items?select=*&limit=10000", session.access_token),
     ]);
-    state.sales = sales;
+    state.sales = sales.filter((sale) =>
+      dashboardView === "sample"
+        ? sale.data_mode === sampleDataMode
+        : sale.data_mode !== sampleDataMode,
+    );
     state.attendees = attendees;
     state.tickets = tickets;
     populateStaff();
@@ -169,7 +198,9 @@ async function loadData() {
     show("dashboard");
     $("sign-out").classList.remove("hidden");
     $("connection-status").className = "status live";
-    $("connection-status").textContent = "Live test data";
+    $("connection-status").textContent = dashboardView === "sample"
+      ? "Sample data · 500 visitors"
+      : "Live data · samples excluded";
     $("last-updated").textContent =
       `Updated ${new Date().toLocaleString("en-GB")}`;
   } catch (error) {
@@ -307,10 +338,9 @@ function countBy(items, valueFn, amountFn = () => 1) {
 }
 
 function renderBars(id, values, formatter = number, limit = 8, options = {}) {
-  const entries = Object.entries(values);
-  if (!options.preserveOrder)
-    entries.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "en"));
-  entries.splice(limit);
+  const entries = Object.entries(values)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "en"))
+    .slice(0, limit);
   const root = $(id);
   root.textContent = "";
   if (!entries.length) {
@@ -338,7 +368,7 @@ function renderBars(id, values, formatter = number, limit = 8, options = {}) {
     track.className = "bar-track";
     const fill = document.createElement("span");
     fill.className = "bar-fill";
-    fill.style.width = `${(value === 0 ? 0 : Math.max(2, (value / max) * 100))}%`;
+    fill.style.width = `${Math.max(2, (value / max) * 100)}%`;
     track.appendChild(fill);
     const valueNode = document.createElement("strong");
     valueNode.className = "bar-value";
@@ -472,27 +502,6 @@ function renderTimeHeatmap(sales) {
   $("average-frequency").textContent = `${averageTransactions.toFixed(1)} transactions / active period`;
 }
 
-function renderAgeGroups(attendees) {
-  const groups = window.WGP1_AGE_GROUPS;
-  const counts = countBy(attendees, person => person.age_group || "unknown");
-  const current = Object.fromEntries(groups.current.map(group => [group.label, counts[group.value] || 0]));
-  const known = new Set(groups.current.map(group => group.value));
-  const previous = Object.fromEntries(groups.legacy
-    .filter(group => counts[group.value])
-    .map(group => {
-      known.add(group.value);
-      return [group.label, counts[group.value]];
-    }));
-  const unknown = Object.entries(counts).filter(([value]) => !known.has(value))
-    .reduce((total, [, count]) => total + count, 0);
-  if (unknown) previous["Unknown / unrecognized age"] = unknown;
-  const previousCount = Object.values(previous).reduce((sum, count) => sum + count, 0);
-  renderBars("chart-age", current, number, Infinity, { preserveOrder: true });
-  $("age-legacy-panel").classList.toggle("hidden", previousCount === 0);
-  $("age-legacy-note").textContent = `${number(previousCount)} of ${number(attendees.length)} visitors have previous or unknown age ranges. Shown separately; narrower ages cannot be inferred. These visitors remain included in total visitors.`;
-  renderBars("chart-age-legacy", previous, number, Infinity, { preserveOrder: true });
-}
-
 function renderDashboard() {
   const sales = state.filteredSales;
   const saleIds = new Set(sales.map((sale) => sale.id));
@@ -550,7 +559,10 @@ function renderDashboard() {
     Number.POSITIVE_INFINITY,
     { showRank: true },
   );
-  renderAgeGroups(attendees);
+  renderBars(
+    "chart-age",
+    countBy(attendees, (person) => person.age_group),
+  );
   const sourceNames = {
     "online-social": "Online Social",
     "pattaya-promotion": "Pattaya Advertising",
@@ -699,9 +711,9 @@ $("toggle-sales-table").addEventListener("click", () => {
   $(id).addEventListener("change", applyFilters),
 );
 
+configureDashboardView();
 if (!configured()) show("setup-panel");
 else if (readInviteSession()) {
 } else if (getSession()?.password_setup_required) show("password-panel");
 else if (getSession()?.access_token) loadData();
 else show("login-panel");
-
