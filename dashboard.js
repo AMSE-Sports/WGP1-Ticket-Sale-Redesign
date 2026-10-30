@@ -306,9 +306,9 @@ function countBy(items, valueFn, amountFn = () => 1) {
   }, {});
 }
 
-function renderBars(id, values, formatter = number, limit = 8) {
+function renderBars(id, values, formatter = number, limit = 8, options = {}) {
   const entries = Object.entries(values)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "en"))
     .slice(0, limit);
   const root = $(id);
   root.textContent = "";
@@ -317,13 +317,22 @@ function renderBars(id, values, formatter = number, limit = 8) {
     return;
   }
   const max = Math.max(...entries.map(([, value]) => value), 1);
-  entries.forEach(([label, value]) => {
+  entries.forEach(([label, value], index) => {
     const row = document.createElement("div");
     row.className = "bar-row";
     const labelNode = document.createElement("span");
     labelNode.className = "bar-label";
     labelNode.title = label;
-    labelNode.textContent = label;
+    if (options.showRank) {
+      const rankNode = document.createElement("b");
+      rankNode.className = "bar-rank";
+      rankNode.textContent = `${index + 1}.`;
+      const nameNode = document.createElement("span");
+      nameNode.textContent = label;
+      labelNode.append(rankNode, nameNode);
+    } else {
+      labelNode.textContent = label;
+    }
     const track = document.createElement("span");
     track.className = "bar-track";
     const fill = document.createElement("span");
@@ -506,14 +515,18 @@ function renderDashboard() {
     money,
     10,
   );
+  const countryValues = countBy(
+    attendees,
+    (person) => person.country_name || person.country_code || "Unknown",
+  );
+  const countryTotal = Object.keys(countryValues).length;
+  $("country-count").textContent = `${number(countryTotal)} ${countryTotal === 1 ? "country" : "countries"}`;
   renderBars(
     "chart-country",
-    countBy(
-      attendees,
-      (person) => person.country_name || person.country_code || "Unknown",
-    ),
+    countryValues,
     number,
     Number.POSITIVE_INFINITY,
+    { showRank: true },
   );
   renderBars(
     "chart-age",
