@@ -468,6 +468,29 @@ select {
 .country-chart .bar-row {
   grid-template-columns: minmax(100px, 0.85fr) minmax(90px, 1.4fr) 48px;
 }
+.country-chart .bar-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.bar-rank {
+  min-width: 22px;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+  font-weight: 850;
+}
+.panel-count {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff1e8;
+  color: #d44d0a;
+  font-size: 11px;
+  font-weight: 800;
+  vertical-align: middle;
+}
 .bar-row {
   display: grid;
   grid-template-columns: minmax(115px, 0.8fr) minmax(150px, 2fr) 64px;
