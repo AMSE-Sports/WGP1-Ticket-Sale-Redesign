@@ -208,6 +208,11 @@ const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD B
 const state = { attendees: [], ticketQuantities: {} };
 const screens = ["screen-welcome","screen-visitor","screen-handover","screen-staff","screen-complete"];
 const $ = id => document.getElementById(id);
+// Preserve each language's age wording for the new open-ended group.
+Object.values(translations).forEach(labels => {
+  labels.age70Plus = labels.age60Plus.replace("60", "70");
+});
+
 let currentLanguage = localStorage.getItem("wgp1-language") || "th";
 if (!translations[currentLanguage]) currentLanguage = "th";
 
@@ -306,6 +311,16 @@ function populateCountries() {
   closeCountrySuggestions();
 }
 
+function populateAgeGroups() {
+  const select = $("v-age");
+  const selected = select.value;
+  select.replaceChildren(new Option(t("selectOption"), ""));
+  window.WGP1_AGE_GROUPS.current.forEach(group => {
+    select.add(new Option(group.translationKey ? t(group.translationKey) : group.label, group.value));
+  });
+  select.value = selected;
+}
+
 function applyLanguage(language) {
   currentLanguage = translations[language] ? language : "th";
   localStorage.setItem("wgp1-language", currentLanguage);
@@ -316,6 +331,7 @@ function applyLanguage(language) {
   document.querySelectorAll(".language-card").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.language === currentLanguage)));
   applyTranslations(document, currentLanguage);
   applyStaffEnglish();
+  populateAgeGroups();
   populateCountries(); renderTickets(); updateCounts();
   window.WGP1_VISITOR_GUIDE?.refresh();
 }
@@ -341,6 +357,8 @@ function updateCounts() {
   if (!$("attendee-modal").classList.contains("hidden")) renderAttendeeList();
 }
 function attendeeAgeLabel(value) {
+  const group = window.WGP1_AGE_GROUPS.current.find(group => group.value === value);
+  if (group) return group.translationKey ? t(group.translationKey) : group.label;
   if (value === "under-10") return t("ageUnder10");
   if (value === "60-plus") return t("age60Plus");
   return value;
@@ -608,4 +626,5 @@ $("next-customer").addEventListener("click", resetAll);
 
 applyLanguage(currentLanguage);
 resetAll();
+
 

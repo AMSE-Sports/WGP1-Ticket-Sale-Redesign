@@ -307,9 +307,10 @@ function countBy(items, valueFn, amountFn = () => 1) {
 }
 
 function renderBars(id, values, formatter = number, limit = 8, options = {}) {
-  const entries = Object.entries(values)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "en"))
-    .slice(0, limit);
+  const entries = Object.entries(values);
+  if (!options.preserveOrder)
+    entries.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "en"));
+  entries.splice(limit);
   const root = $(id);
   root.textContent = "";
   if (!entries.length) {
@@ -337,7 +338,7 @@ function renderBars(id, values, formatter = number, limit = 8, options = {}) {
     track.className = "bar-track";
     const fill = document.createElement("span");
     fill.className = "bar-fill";
-    fill.style.width = `${Math.max(2, (value / max) * 100)}%`;
+    fill.style.width = `${(value === 0 ? 0 : Math.max(2, (value / max) * 100))}%`;
     track.appendChild(fill);
     const valueNode = document.createElement("strong");
     valueNode.className = "bar-value";
@@ -471,6 +472,27 @@ function renderTimeHeatmap(sales) {
   $("average-frequency").textContent = `${averageTransactions.toFixed(1)} transactions / active period`;
 }
 
+function renderAgeGroups(attendees) {
+  const groups = window.WGP1_AGE_GROUPS;
+  const counts = countBy(attendees, person => person.age_group || "unknown");
+  const current = Object.fromEntries(groups.current.map(group => [group.label, counts[group.value] || 0]));
+  const known = new Set(groups.current.map(group => group.value));
+  const previous = Object.fromEntries(groups.legacy
+    .filter(group => counts[group.value])
+    .map(group => {
+      known.add(group.value);
+      return [group.label, counts[group.value]];
+    }));
+  const unknown = Object.entries(counts).filter(([value]) => !known.has(value))
+    .reduce((total, [, count]) => total + count, 0);
+  if (unknown) previous["Unknown / unrecognized age"] = unknown;
+  const previousCount = Object.values(previous).reduce((sum, count) => sum + count, 0);
+  renderBars("chart-age", current, number, Infinity, { preserveOrder: true });
+  $("age-legacy-panel").classList.toggle("hidden", previousCount === 0);
+  $("age-legacy-note").textContent = `${number(previousCount)} of ${number(attendees.length)} visitors have previous or unknown age ranges. Shown separately; narrower ages cannot be inferred. These visitors remain included in total visitors.`;
+  renderBars("chart-age-legacy", previous, number, Infinity, { preserveOrder: true });
+}
+
 function renderDashboard() {
   const sales = state.filteredSales;
   const saleIds = new Set(sales.map((sale) => sale.id));
@@ -528,10 +550,7 @@ function renderDashboard() {
     Number.POSITIVE_INFINITY,
     { showRank: true },
   );
-  renderBars(
-    "chart-age",
-    countBy(attendees, (person) => person.age_group),
-  );
+  renderAgeGroups(attendees);
   const sourceNames = {
     "online-social": "Online Social",
     "pattaya-promotion": "Pattaya Advertising",
@@ -685,3 +704,4 @@ else if (readInviteSession()) {
 } else if (getSession()?.password_setup_required) show("password-panel");
 else if (getSession()?.access_token) loadData();
 else show("login-panel");
+
