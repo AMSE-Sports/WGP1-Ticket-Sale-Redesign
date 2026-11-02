@@ -1,0 +1,149 @@
+/* Use the available window, including standalone iPad web apps and Split View. */
+html { min-height: 100%; -webkit-text-size-adjust: 100%; }
+body.flow-active, body.welcome-mode {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+body > .hero, body > .dev-notice, body > footer { flex-shrink: 0; }
+.flow-active main, .welcome-mode main {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 1600px;
+}
+.screen { width: 100%; min-width: 0; }
+.flow-active #screen-visitor, .flow-active #screen-staff {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.welcome-mode .welcome-screen {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  place-items: center;
+}
+.flow-active #screen-visitor .page-head,
+.flow-active #screen-staff .page-head,
+.flow-active #visitor-form, .flow-active #staff-form {
+  width: 100%;
+  max-width: none;
+}
+.flow-active #screen-handover:not(.hidden),
+.flow-active #screen-complete:not(.hidden) {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  place-items: center;
+}
+.flow-active #screen-handover .handover {
+  width: min(100%, 1000px);
+  min-height: min(60dvh, 500px);
+  margin: 0 auto;
+}
+/* Content can grow normally when the keyboard or extra fields need room. */
+input, select, textarea, button { scroll-margin-block: 24px; }
+.country-suggestions { max-height: min(250px, 35dvh); }
+.attendee-modal-card { max-height: 85vh; max-height: 85dvh; overflow-y: auto; }
+
+@media (min-width: 760px) {
+  .flow-active main, .welcome-mode main {
+    padding: clamp(5px, 1dvh, 12px) clamp(12px, 1.5vw, 24px);
+  }
+  .hero-copy h1, .flow-active .hero-copy h1, .welcome-mode .hero-copy h1 {
+    font-size: clamp(18px, 2.15vw, 30px);
+  }
+  .flow-active #screen-visitor .page-head,
+  .flow-active #screen-staff .page-head { flex-wrap: wrap; }
+  .flow-active #visitor-form { flex: 1 0 auto; }
+  .flow-active .five-step-layout { gap: clamp(4px, .7dvh, 10px); }
+  .flow-active .five-step-layout .form-section {
+    padding-block: clamp(5px, .8dvh, 12px);
+  }
+  .flow-active .five-step-layout input:not([type=checkbox]):not([type=radio]),
+  .flow-active .five-step-layout select {
+    min-height: 40px;
+    font-size: clamp(18px, 2vw, 23px);
+  }
+  .flow-active .five-step-layout .field-title {
+    font-size: clamp(18px, 2vw, 23px);
+  }
+  .flow-active .five-step-layout .section-title h3 {
+    font-size: clamp(20px, 2vw, 25px);
+  }
+  .flow-active .five-step-layout .option-tile span {
+    min-height: 40px;
+    font-size: clamp(16px, 1.65vw, 20px);
+  }
+  .flow-active .five-step-layout .privacy-details summary {
+    display: block;
+    font-size: clamp(16px, 1.5vw, 18px);
+  }
+  .flow-active .five-step-layout .privacy-box {
+    font-size: clamp(16px, 1.4vw, 18px);
+  }
+  .flow-active .five-step-layout .check-line span {
+    font-size: clamp(16px, 1.5vw, 19px);
+  }
+  .flow-active #staff-form .ticket-lines { align-content: start; }
+  .flow-active #staff-form .ticket-line { min-width: 0; }
+  .welcome-mode .welcome-card { max-width: none; }
+  .welcome-mode .language-card {
+    min-height: clamp(108px, 17dvh, 180px);
+  }
+}
+
+/* Narrow tablets: let labels breathe and keep ticket cards readable. */
+@media (min-width: 760px) and (max-width: 1100px) {
+  .flow-active #staff-form .ticket-lines { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow-active #staff-form .staff-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow-active #staff-form .staff-summary > label { grid-column: 1 / -1; }
+  .flow-active #screen-staff .staff-head-actions { flex-wrap: wrap; }
+}
+@media (min-width: 760px) and (max-width: 900px) {
+  #visitor-form .source-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow-active .five-step-layout .identity-section,
+  .flow-active .five-step-layout .demographics-section,
+  .flow-active .five-step-layout .attendance-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .flow-active .five-step-layout .section-title { margin-bottom: 3px; }
+  .flow-active #screen-visitor .page-head { align-items: center; }
+  .visitor-guide { flex: 1; }
+}
+
+/* Small windows and Split View retain a readable, scrolling single column. */
+@media (max-width: 759px) {
+  .flow-active main, .welcome-mode main { padding: 12px; }
+  .flow-active .hero, .flow-active .hero img { height: 112px; min-height: 112px; }
+  .flow-active .hero-copy { left: 12px; right: 12px; bottom: 10px; padding-top: 0; }
+  .flow-active .hero-copy h1, .welcome-mode .hero-copy h1 {
+    font-size: clamp(20px, 4vw, 30px);
+    line-height: 1.15;
+  }
+  .flow-active .hero-copy p, .flow-active .year-chip { display: none; }
+  .flow-active .language-switcher { top: 8px; right: 12px; }
+  .flow-active .five-step-layout .form-section { padding: 16px; }
+  .flow-active .five-step-layout .field-title,
+  .flow-active .five-step-layout input:not([type=checkbox]):not([type=radio]),
+  .flow-active .five-step-layout select { font-size: 20px; }
+  .flow-active .five-step-layout .section-title h3 { font-size: 24px; }
+  .flow-active .five-step-layout .privacy-box,
+  .flow-active .five-step-layout .check-line span { font-size: 18px; }
+  .flow-active .five-step-layout .option-tile span { font-size: 18px; min-height: 44px; }
+  #visitor-form .registration-action { min-height: 66px; }
+  .flow-active .form-wide-actions .registration-action strong { font-size: 20px; }
+  .welcome-mode .welcome-card { width: 100%; padding: 20px 12px; }
+  .welcome-mode .language-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .welcome-mode .welcome-card h2 { font-size: clamp(28px, 5vw, 40px); }
+  .welcome-mode .welcome-subtitle { font-size: 20px; }
+}
