@@ -11,7 +11,7 @@ body.flow-active, body.welcome-mode {
 body > .hero, body > .dev-notice, body > footer { flex-shrink: 0; }
 .flow-active main, .welcome-mode main {
   display: flex;
-  flex: 1 0 auto;
+  flex: 1;
   width: 100%;
   min-width: 0;
   max-width: 1600px;
@@ -61,7 +61,7 @@ input, select, textarea, button { scroll-margin-block: 24px; }
   }
   .flow-active #screen-visitor .page-head,
   .flow-active #screen-staff .page-head { flex-wrap: wrap; }
-  .flow-active #visitor-form { flex: 1 0 auto; }
+  .flow-active #visitor-form { flex: 1; }
   .flow-active .five-step-layout { gap: clamp(4px, .7dvh, 10px); }
   .flow-active .five-step-layout .form-section {
     padding-block: clamp(5px, .8dvh, 12px);
@@ -96,6 +96,31 @@ input, select, textarea, button { scroll-margin-block: 24px; }
   .welcome-mode .welcome-card { max-width: none; }
   .welcome-mode .language-card {
     min-height: clamp(108px, 17dvh, 180px);
+  }
+}
+
+/* Landscape uses a label column to leave more height for the five steps. */
+@media (min-width: 901px) and (orientation: landscape) {
+  .flow-active .five-step-layout .identity-section,
+  .flow-active .five-step-layout .demographics-section,
+  .flow-active .five-step-layout .attendance-section {
+    display: grid;
+    grid-template-columns: clamp(180px, 18vw, 230px) minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+  .flow-active .five-step-layout .identity-section .section-title,
+  .flow-active .five-step-layout .demographics-section .section-title,
+  .flow-active .five-step-layout .attendance-section .section-title {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .flow-active .five-step-layout .source-section .section-title > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 }
 
